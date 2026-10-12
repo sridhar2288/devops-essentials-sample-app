@@ -1,0 +1,122 @@
+# Least-privilege identity for k8s-perf-collector.sh.
+#
+#   kubectl apply -f rbac.yaml
+#
+# Grants read-only access to everything the collector reads. Three parts:
+#   1. k8s-perf-collector-read      (required) objects, events, API server
+#                                   /metrics, /livez, /readyz, metrics.k8s.io
+#   2. k8s-perf-collector-kubelet   (optional) nodes/proxy for the kubelet
+#                                   Summary API, cAdvisor and prober metrics
+#   3. k8s-perf-collector-write-probe (optional) ConfigMaps in the k8s-perf
+#                                   namespace only, for --write-probe
+#
+# SECURITY: nodes/proxy is not a read-only permission. The Kubernetes RBAC
+# good-practices guide notes that it grants the whole kubelet API, which
+# allows command execution in every pod on the node. Bind part 2 only where
+# that is acceptable, remove it when you are done, or skip it and run the
+# collector with --skip-node-stats (container usage then comes from
+# metrics-server if installed; throttling, OOM and probe counters are lost).
+#
+# Run the collector as this identity, e.g. by impersonation:
+#   ./k8s-perf-collector.sh \
+#     --kubectl-arg=--as=system:serviceaccount:k8s-perf:k8s-perf-collector
+# or with a token kubeconfig (see k8s-perf/README.md).
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: k8s-perf
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: k8s-perf-collector
+  namespace: k8s-perf
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: k8s-perf-collector-read
+rules:
+- apiGroups: [""]
+  resources: [pods, events, nodes, namespaces, persistentvolumeclaims, resourcequotas, services]
+  verbs: [get, list]
+- apiGroups: [apps]
+  resources: [deployments, statefulsets, daemonsets]
+  verbs: [get, list]
+- apiGroups: [batch]
+  resources: [jobs]
+  verbs: [get, list]
+- apiGroups: [discovery.k8s.io]
+  resources: [endpointslices]
+  verbs: [get, list]
+- apiGroups: [autoscaling]
+  resources: [horizontalpodautoscalers]
+  verbs: [get, list]
+- apiGroups: [metrics.k8s.io]
+  resources: [pods, nodes]
+  verbs: [get, list]
+- apiGroups: [coordination.k8s.io]   # LIST latency probe on node leases
+  resources: [leases]
+  verbs: [list]
+- nonResourceURLs: [/metrics, /livez, /livez/*, /readyz, /readyz/*, /version, /apis, /apis/*]
+  verbs: [get]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: k8s-perf-collector-read
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: k8s-perf-collector-read
+subjects:
+- kind: ServiceAccount
+  name: k8s-perf-collector
+  namespace: k8s-perf
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: k8s-perf-collector-kubelet
+rules:
+- apiGroups: [""]
+  resources: [nodes/proxy]
+  verbs: [get]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: k8s-perf-collector-kubelet
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: k8s-perf-collector-kubelet
+subjects:
+- kind: ServiceAccount
+  name: k8s-perf-collector
+  namespace: k8s-perf
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: k8s-perf-collector-write-probe
+  namespace: k8s-perf
+rules:
+- apiGroups: [""]
+  resources: [configmaps]
+  verbs: [create, get, patch, delete, list]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: k8s-perf-collector-write-probe
+  namespace: k8s-perf
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: k8s-perf-collector-write-probe
+subjects:
+- kind: ServiceAccount
+  name: k8s-perf-collector
+  namespace: k8s-perf

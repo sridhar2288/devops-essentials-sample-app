@@ -1,0 +1,40 @@
+{
+  "apiVersion": "v1",
+  "items": [
+    {
+      "apiVersion": "v1",
+      "kind": "ResourceQuota",
+      "metadata": {
+        "annotations": {},
+        "creationTimestamp": "2026-10-12T17:36:18Z",
+        "name": "web-quota",
+        "namespace": "perf-demo-web",
+        "resourceVersion": "910",
+        "uid": "94267d4e-ea28-4221-9bf6-c5f34598711d"
+      },
+      "spec": {
+        "hard": {
+          "pods": "3",
+          "requests.cpu": "1",
+          "requests.memory": "256Mi"
+        }
+      },
+      "status": {
+        "hard": {
+          "pods": "3",
+          "requests.cpu": "1",
+          "requests.memory": "256Mi"
+        },
+        "used": {
+          "pods": "3",
+          "requests.cpu": "110m",
+          "requests.memory": "72Mi"
+        }
+      }
+    }
+  ],
+  "kind": "List",
+  "metadata": {
+    "resourceVersion": ""
+  }
+}

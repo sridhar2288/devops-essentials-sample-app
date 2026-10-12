@@ -1,0 +1,92 @@
+{
+  "apiVersion": "v1",
+  "items": [
+    {
+      "apiVersion": "v1",
+      "kind": "PersistentVolumeClaim",
+      "metadata": {
+        "annotations": {
+          "pv.kubernetes.io/bind-completed": "yes",
+          "pv.kubernetes.io/bound-by-controller": "yes",
+          "volume.beta.kubernetes.io/storage-provisioner": "rancher.io/local-path",
+          "volume.kubernetes.io/selected-node": "k8s-perf-worker",
+          "volume.kubernetes.io/storage-provisioner": "rancher.io/local-path"
+        },
+        "creationTimestamp": "2026-10-12T18:14:24Z",
+        "finalizers": [
+          "kubernetes.io/pvc-protection"
+        ],
+        "name": "k8s-perf-reports",
+        "namespace": "k8s-perf",
+        "resourceVersion": "6702",
+        "uid": "f82d4dbd-4de0-48fa-bab5-7e8be1b19ba6"
+      },
+      "spec": {
+        "accessModes": [
+          "ReadWriteOnce"
+        ],
+        "resources": {
+          "requests": {
+            "storage": "2Gi"
+          }
+        },
+        "storageClassName": "standard",
+        "volumeMode": "Filesystem",
+        "volumeName": "pvc-f82d4dbd-4de0-48fa-bab5-7e8be1b19ba6"
+      },
+      "status": {
+        "accessModes": [
+          "ReadWriteOnce"
+        ],
+        "capacity": {
+          "storage": "2Gi"
+        },
+        "conditions": [
+          {
+            "lastProbeTime": null,
+            "lastTransitionTime": "2026-10-12T18:23:44Z",
+            "message": "No pods are currently referencing this PVC",
+            "reason": "NoPodsUsingPVC",
+            "status": "True",
+            "type": "Unused"
+          }
+        ],
+        "phase": "Bound"
+      }
+    },
+    {
+      "apiVersion": "v1",
+      "kind": "PersistentVolumeClaim",
+      "metadata": {
+        "annotations": {},
+        "creationTimestamp": "2026-10-12T17:36:18Z",
+        "finalizers": [
+          "kubernetes.io/pvc-protection"
+        ],
+        "name": "data-pending",
+        "namespace": "perf-demo-broken",
+        "resourceVersion": "861",
+        "uid": "139030ac-4f94-4ba5-831d-e507659e8b33"
+      },
+      "spec": {
+        "accessModes": [
+          "ReadWriteOnce"
+        ],
+        "resources": {
+          "requests": {
+            "storage": "1Gi"
+          }
+        },
+        "storageClassName": "no-such-storage-class",
+        "volumeMode": "Filesystem"
+      },
+      "status": {
+        "phase": "Pending"
+      }
+    }
+  ],
+  "kind": "List",
+  "metadata": {
+    "resourceVersion": ""
+  }
+}

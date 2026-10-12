@@ -1,0 +1,152 @@
+k8s-perf-collector 1.0.0 - DRY RUN (server): read-only connectivity/RBAC preflight; nothing is collected or written.
+
+Prerequisites
+  bash         5.2.21(1)-release            ok
+  kubectl      v1.37.1                      ok
+  jq           jq-1.7                       ok
+  timeout      /usr/bin/timeout             ok
+  clock        epochrealtime                ms resolution
+
+Configuration
+  kube context               kind-k8s-perf
+  scope                      all namespaces
+  output directory           ./k8s-perf-report
+  observation window         30s
+  latency probe samples      10 per endpoint
+  request timeout            15s per request
+  kubelet scraping           enabled, 4 nodes in parallel
+  write probe                enabled (namespace k8s-perf)
+  redaction                  env values, managedFields, last-applied annotations removed
+  thresholds                 {"apf_wait_ms":1000,"api_slow_ms":1000,"cpu_throttle_pct":25,"etcd_slow_ms":250,"mem_limit_pct":90,"node_cpu_pct":90,"node_disk_pct":85,"node_mem_pct":90,"node_pid_pct":80,"pending_minutes":5,"pleg_slow_ms":1000,"quota_pct":90,"restart_count":3,"restart_recent_minutes":15,"throttle_min_periods":100,"volume_pct":90,"webhook_slow_ms":1000}
+
+Collection plan (each line is one kubectl invocation, timed and classified)
+
+  [1/8] Connectivity and API server health
+    version                            kubectl --request-timeout 15s --as=system:serviceaccount:k8s-perf:k8s-perf-collector get --raw /version -v=6
+                                       -> raw/cluster/version.json
+    livez                              kubectl --request-timeout 15s --as=system:serviceaccount:k8s-perf:k8s-perf-collector get --raw '/livez?verbose' -v=6
+                                       -> raw/cluster/livez.txt
+    readyz                             kubectl --request-timeout 15s --as=system:serviceaccount:k8s-perf:k8s-perf-collector get --raw '/readyz?verbose' -v=6
+                                       -> raw/cluster/readyz.txt
+
+  [2/8] Cluster inventory: nodes and namespaces
+    list:nodes                         kubectl --request-timeout 15s --as=system:serviceaccount:k8s-perf:k8s-perf-collector get nodes -o json -v=6
+                                       -> raw/cluster/nodes.json
+    list:namespaces                    kubectl --request-timeout 15s --as=system:serviceaccount:k8s-perf:k8s-perf-collector get namespaces -o json -v=6
+                                       -> raw/cluster/namespaces.json
+
+  [3/8] API server metrics, scrape 1 of 2 (opens the 30s observation window)
+    metrics:apiserver:start            kubectl --request-timeout 15s --as=system:serviceaccount:k8s-perf:k8s-perf-collector get --raw /metrics -v=6
+                                       -> raw/metrics/apiserver-start.full.prom
+
+  [4/8] Client-side API latency probes (10 samples per endpoint, round-robin)
+    probe:livez:1..10                  kubectl --request-timeout 15s --as=system:serviceaccount:k8s-perf:k8s-perf-collector get --raw /livez -v=6
+    probe:readyz:1..10                 kubectl --request-timeout 15s --as=system:serviceaccount:k8s-perf:k8s-perf-collector get --raw /readyz -v=6
+    probe:version:1..10                kubectl --request-timeout 15s --as=system:serviceaccount:k8s-perf:k8s-perf-collector get --raw /version -v=6
+    probe:discovery:1..10              kubectl --request-timeout 15s --as=system:serviceaccount:k8s-perf:k8s-perf-collector get --raw /apis -v=6
+    probe:get-namespace:1..10          kubectl --request-timeout 15s --as=system:serviceaccount:k8s-perf:k8s-perf-collector get --raw /api/v1/namespaces/kube-system -v=6
+    probe:list-namespaces:1..10        kubectl --request-timeout 15s --as=system:serviceaccount:k8s-perf:k8s-perf-collector get --raw '/api/v1/namespaces?limit=500' -v=6
+    probe:list-nodes:1..10             kubectl --request-timeout 15s --as=system:serviceaccount:k8s-perf:k8s-perf-collector get --raw '/api/v1/nodes?limit=500' -v=6
+    probe:list-pods:1..10              kubectl --request-timeout 15s --as=system:serviceaccount:k8s-perf:k8s-perf-collector get --raw '/api/v1/pods?limit=500' -v=6
+    probe:list-events:1..10            kubectl --request-timeout 15s --as=system:serviceaccount:k8s-perf:k8s-perf-collector get --raw '/api/v1/events?limit=500' -v=6
+    probe:list-leases:1..10            kubectl --request-timeout 15s --as=system:serviceaccount:k8s-perf:k8s-perf-collector get --raw '/apis/coordination.k8s.io/v1/namespaces/kube-node-lease/leases?limit=500' -v=6
+    probe:cm-create:1                  kubectl --request-timeout 15s --as=system:serviceaccount:k8s-perf:k8s-perf-collector create --validate=false -f /tmp/k8s-perf.NOY31B/probe-cm-1.json -o name -v=6
+    probe:cm-get:1                     kubectl --request-timeout 15s --as=system:serviceaccount:k8s-perf:k8s-perf-collector get configmap k8s-perf-probe-20261012t182949z-1 -n k8s-perf -o name -v=6
+    probe:cm-patch:1                   kubectl --request-timeout 15s --as=system:serviceaccount:k8s-perf:k8s-perf-collector patch configmap k8s-perf-probe-20261012t182949z-1 -n k8s-perf --type=merge -p '{"data":{"probe":"2"}}' -v=6
+    probe:cm-delete:1                  kubectl --request-timeout 15s --as=system:serviceaccount:k8s-perf:k8s-perf-collector delete configmap k8s-perf-probe-20261012t182949z-1 -n k8s-perf --wait=false -v=6
+
+  [5/8] Namespaced objects: pods, events, workloads, PVCs, quotas, services, HPAs
+    list:pods                          kubectl --request-timeout 15s --as=system:serviceaccount:k8s-perf:k8s-perf-collector get pods --all-namespaces -o json -v=6
+                                       -> raw/objects/pods.json
+    list:events                        kubectl --request-timeout 15s --as=system:serviceaccount:k8s-perf:k8s-perf-collector get events --all-namespaces -o json -v=6
+                                       -> raw/objects/events.json
+    list:deployments                   kubectl --request-timeout 15s --as=system:serviceaccount:k8s-perf:k8s-perf-collector get deployments.apps --all-namespaces -o json -v=6
+                                       -> raw/objects/deployments.json
+    list:statefulsets                  kubectl --request-timeout 15s --as=system:serviceaccount:k8s-perf:k8s-perf-collector get statefulsets.apps --all-namespaces -o json -v=6
+                                       -> raw/objects/statefulsets.json
+    list:daemonsets                    kubectl --request-timeout 15s --as=system:serviceaccount:k8s-perf:k8s-perf-collector get daemonsets.apps --all-namespaces -o json -v=6
+                                       -> raw/objects/daemonsets.json
+    list:jobs                          kubectl --request-timeout 15s --as=system:serviceaccount:k8s-perf:k8s-perf-collector get jobs.batch --all-namespaces -o json -v=6
+                                       -> raw/objects/jobs.json
+    list:pvcs                          kubectl --request-timeout 15s --as=system:serviceaccount:k8s-perf:k8s-perf-collector get persistentvolumeclaims --all-namespaces -o json -v=6
+                                       -> raw/objects/pvcs.json
+    list:resourcequotas                kubectl --request-timeout 15s --as=system:serviceaccount:k8s-perf:k8s-perf-collector get resourcequotas --all-namespaces -o json -v=6
+                                       -> raw/objects/resourcequotas.json
+    list:services                      kubectl --request-timeout 15s --as=system:serviceaccount:k8s-perf:k8s-perf-collector get services --all-namespaces -o json -v=6
+                                       -> raw/objects/services.json
+    list:endpointslices                kubectl --request-timeout 15s --as=system:serviceaccount:k8s-perf:k8s-perf-collector get endpointslices.discovery.k8s.io --all-namespaces -o json -v=6
+                                       -> raw/objects/endpointslices.json
+    list:hpas                          kubectl --request-timeout 15s --as=system:serviceaccount:k8s-perf:k8s-perf-collector get horizontalpodautoscalers.autoscaling --all-namespaces -o json -v=6
+                                       -> raw/objects/hpas.json
+
+  [6/8] Node and container level: kubelet Summary API, cAdvisor, prober and kubelet metrics (via node proxy, 4 in parallel)
+    node:<node>:summary                kubectl --request-timeout 15s --as=system:serviceaccount:k8s-perf:k8s-perf-collector get --raw '/api/v1/nodes/<node>/proxy/stats/summary' -v=6
+                                       -> raw/nodes/<node>/summary.json
+    node:<node>:cadvisor               kubectl --request-timeout 15s --as=system:serviceaccount:k8s-perf:k8s-perf-collector get --raw '/api/v1/nodes/<node>/proxy/metrics/cadvisor' -v=6
+                                       -> raw/nodes/<node>/cadvisor.full.prom
+    node:<node>:probes                 kubectl --request-timeout 15s --as=system:serviceaccount:k8s-perf:k8s-perf-collector get --raw '/api/v1/nodes/<node>/proxy/metrics/probes' -v=6
+                                       -> raw/nodes/<node>/probes.full.prom
+    node:<node>:kubelet                kubectl --request-timeout 15s --as=system:serviceaccount:k8s-perf:k8s-perf-collector get --raw '/api/v1/nodes/<node>/proxy/metrics' -v=6
+                                       -> raw/nodes/<node>/kubelet.full.prom
+                                       (repeated for every node in scope)
+
+  [7/8] metrics.k8s.io (metrics-server) - optional fallback for container usage
+    metrics:metrics-server:pods        kubectl --request-timeout 15s --as=system:serviceaccount:k8s-perf:k8s-perf-collector get --raw /apis/metrics.k8s.io/v1beta1/pods -v=6
+                                       -> raw/metrics/metrics-server-pods.json
+
+  [8/8] API server metrics, scrape 2 of 2 (closes the 30s observation window)
+    (wait)                             sleep until 30s have passed since scrape 1
+    metrics:apiserver:end              kubectl --request-timeout 15s --as=system:serviceaccount:k8s-perf:k8s-perf-collector get --raw /metrics -v=6
+                                       -> raw/metrics/apiserver-end.full.prom
+
+Analysis outputs (written to ./k8s-perf-report)
+  report.md                    human-readable report: verdict, API, nodes, namespaces, containers, events
+  summary.json                 everything above as structured JSON
+  csv/failures.csv             every finding: severity, category, object, reason, message
+  csv/containers.csv           per container: state, restarts, exit codes, CPU/memory vs requests/limits, throttling, OOM, probes
+  csv/namespaces.csv           per namespace: pod phases, usage vs requests/limits, restarts, warning events, quota
+  csv/nodes.csv                per node: conditions, allocatable, requests, usage, disk, PIDs, kubelet health
+  csv/api_client_latency.csv   per probed endpoint: samples, timeouts, errors, p50/p90/p99
+  csv/apiserver_latency.csv    per verb/resource: request count and p50/p90/p99 vs upstream SLOs
+  csv/apiserver_errors.csv     5xx/429 responses, request terminations, APF rejections
+  csv/events.csv               all events aggregated per object/reason with category
+  csv/collector_calls.csv      every API call this run made, with timings and outcome
+  collector.log                run log including every timeout and error
+  raw/                         raw API responses (filtered Prometheus scrapes, object lists)
+
+Planned kubectl invocations: 163 for a single node (+4 per additional node)
+
+Server preflight
+  API server reachable               yes (v1.37.0, 94ms incl. kubectl start-up)
+  metrics-server (metrics.k8s.io)    not installed (fine - kubelet Summary API is used)
+  cluster size (in scope)            nodes=2 namespaces=8 pods=24 events=199
+
+  RBAC (SelfSubjectAccessReview, as the identity the collector will use)
+  VERB   RESOURCE                                 SCOPE        ALLOWED  PURPOSE
+  get    /version                                 nonresource  yes      connectivity (required)
+  get    /livez                                   nonresource  yes      API liveness checks
+  get    /readyz                                  nonresource  yes      API readiness checks
+  get    /metrics                                 nonresource  yes      API server metrics
+  list   nodes                                    cluster      yes      node conditions and capacity
+  list   namespaces                               cluster      yes      namespace inventory
+  get    nodes/proxy                              cluster      yes      kubelet stats, cAdvisor, probes
+  list   pods                                     namespaced   yes      container state (required)
+  list   events                                   namespaced   yes      messages and failure events
+  list   deployments.apps                         namespaced   yes      workload status
+  list   statefulsets.apps                        namespaced   yes      workload status
+  list   daemonsets.apps                          namespaced   yes      workload status
+  list   jobs.batch                               namespaced   yes      job failures
+  list   persistentvolumeclaims                   namespaced   yes      storage status
+  list   resourcequotas                           namespaced   yes      quota usage
+  list   services                                 namespaced   yes      service endpoints
+  list   endpointslices.discovery.k8s.io          namespaced   yes      service endpoints
+  list   horizontalpodautoscalers.autoscaling     namespaced   yes      autoscaler status
+  list   pods.metrics.k8s.io                      namespaced   yes      metrics-server fallback
+  list   leases.coordination.k8s.io               cluster      yes      lease LIST latency probe
+  create configmaps                               probe        yes      --write-probe
+  patch  configmaps                               probe        yes      --write-probe
+  delete configmaps                               probe        yes      --write-probe
+
+  Estimated kubectl invocations for a real run: ~167 (minimum duration ~30s)
+
+Preflight complete; nothing was collected.

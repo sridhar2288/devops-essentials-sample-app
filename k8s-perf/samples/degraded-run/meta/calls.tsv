@@ -1,0 +1,128 @@
+ts	phase	id	target	status	exit_code	wall_ms	http_ms	http_requests	http_status	bytes	notes	message
+2026-10-12T18:08:37Z	cluster	version	/version	ok	0	115	10	1	200	379		
+2026-10-12T18:08:37Z	cluster	livez	/livez?verbose	ok	0	122	15	1	200	1767		
+2026-10-12T18:08:37Z	cluster	readyz	/readyz?verbose	ok	0	91	11	1	200	1789		
+2026-10-12T18:08:38Z	cluster	list:nodes	nodes	ok	0	1113	18	4	200	21468	recovered-after-1-failed-attempt(s);	
+2026-10-12T18:08:39Z	cluster	list:namespaces	namespaces	ok	0	90	11	1	200	6419		
+2026-10-12T18:08:39Z	apiserver	metrics:apiserver:start	/metrics	unreachable	1	92	1	1		0		Unable to connect to the server: write tcp 127.0.0.1:52074->127.0.0.1:16443: write: connection reset by peer
+2026-10-12T18:08:39Z	probe	probe:livez:1	/livez	ok	0	97	12	1	200	0		
+2026-10-12T18:08:39Z	probe	probe:readyz:1	/readyz	unreachable	1	69	1	1		0		Unable to connect to the server: read tcp 127.0.0.1:52092->127.0.0.1:16443: read: connection reset by peer
+2026-10-12T18:08:39Z	probe	probe:version:1	/version	ok	0	82	8	1	200	0		
+2026-10-12T18:08:39Z	probe	probe:discovery:1	/apis	unreachable	1	88	1	1		0		Unable to connect to the server: read tcp 127.0.0.1:52106->127.0.0.1:16443: read: connection reset by peer
+2026-10-12T18:08:39Z	probe	probe:get-namespace:1	/api/v1/namespaces/kube-system	unreachable	1	72	1	1		0		Unable to connect to the server: read tcp 127.0.0.1:52110->127.0.0.1:16443: read: connection reset by peer
+2026-10-12T18:08:39Z	probe	probe:list-namespaces:1	/api/v1/namespaces?limit=500	ok	0	82	10	1	200	0		
+2026-10-12T18:08:39Z	probe	probe:list-nodes:1	/api/v1/nodes?limit=500	ok	0	98	11	1	200	0		
+2026-10-12T18:08:43Z	probe	probe:list-pods:1	/api/v1/pods?limit=500	timeout	1	3085	3000	1		0		Unable to connect to the server: context deadline exceeded (Client.Timeout exceeded while awaiting headers)
+2026-10-12T18:08:46Z	probe	probe:list-events:1	/api/v1/events?limit=500	timeout	1	3077	3000	1		0		Unable to connect to the server: context deadline exceeded (Client.Timeout exceeded while awaiting headers)
+2026-10-12T18:08:46Z	probe	probe:list-leases:1	/apis/coordination.k8s.io/v1/namespaces/kube-node-lease/leases?limit=500	ok	0	89	10	1	200	0		
+2026-10-12T18:08:46Z	probe	probe:livez:2	/livez	ok	0	99	12	1	200	0		
+2026-10-12T18:08:46Z	probe	probe:readyz:2	/readyz	ok	0	90	14	1	200	0		
+2026-10-12T18:08:46Z	probe	probe:version:2	/version	ok	0	98	12	1	200	0		
+2026-10-12T18:08:46Z	probe	probe:discovery:2	/apis	ok	0	98	8	1	200	0		
+2026-10-12T18:08:46Z	probe	probe:get-namespace:2	/api/v1/namespaces/kube-system	unreachable	1	77	0	1		0		Unable to connect to the server: read tcp 127.0.0.1:38678->127.0.0.1:16443: read: connection reset by peer
+2026-10-12T18:08:47Z	probe	probe:list-namespaces:2	/api/v1/namespaces?limit=500	ok	0	77	10	1	200	0		
+2026-10-12T18:08:50Z	probe	probe:list-nodes:2	/api/v1/nodes?limit=500	timeout	1	3066	3000	1		0		Unable to connect to the server: context deadline exceeded (Client.Timeout exceeded while awaiting headers)
+2026-10-12T18:08:53Z	probe	probe:list-pods:2	/api/v1/pods?limit=500	timeout	1	3106	3000	1		0		Unable to connect to the server: context deadline exceeded (Client.Timeout exceeded while awaiting headers)
+2026-10-12T18:08:56Z	probe	probe:list-events:2	/api/v1/events?limit=500	timeout	1	3074	3001	1		0		Unable to connect to the server: context deadline exceeded (Client.Timeout exceeded while awaiting headers)
+2026-10-12T18:08:59Z	probe	probe:list-leases:2	/apis/coordination.k8s.io/v1/namespaces/kube-node-lease/leases?limit=500	timeout	1	3075	3001	1		0		Unable to connect to the server: context deadline exceeded (Client.Timeout exceeded while awaiting headers)
+2026-10-12T18:08:59Z	probe	probe:livez:3	/livez	ok	0	96	10	1	200	0		
+2026-10-12T18:09:02Z	probe	probe:readyz:3	/readyz	timeout	1	3086	3000	1		0		Unable to connect to the server: context deadline exceeded (Client.Timeout exceeded while awaiting headers)
+2026-10-12T18:09:02Z	probe	probe:version:3	/version	ok	0	100	12	1	200	0		
+2026-10-12T18:09:03Z	probe	probe:discovery:3	/apis	ok	0	85	12	1	200	0		
+2026-10-12T18:09:03Z	probe	probe:get-namespace:3	/api/v1/namespaces/kube-system	ok	0	89	17	1	200	0		
+2026-10-12T18:09:03Z	probe	probe:list-namespaces:3	/api/v1/namespaces?limit=500	ok	0	104	13	1	200	0		
+2026-10-12T18:09:03Z	probe	probe:list-nodes:3	/api/v1/nodes?limit=500	unreachable	1	68	1	1		0		Unable to connect to the server: read tcp 127.0.0.1:59580->127.0.0.1:16443: read: connection reset by peer
+2026-10-12T18:09:03Z	probe	probe:list-pods:3	/api/v1/pods?limit=500	unreachable	1	82	1	1		0		Unable to connect to the server: write tcp 127.0.0.1:59582->127.0.0.1:16443: write: connection reset by peer
+2026-10-12T18:09:06Z	probe	probe:list-events:3	/api/v1/events?limit=500	timeout	1	3085	3000	1		0		Unable to connect to the server: context deadline exceeded (Client.Timeout exceeded while awaiting headers)
+2026-10-12T18:09:06Z	probe	probe:list-leases:3	/apis/coordination.k8s.io/v1/namespaces/kube-node-lease/leases?limit=500	ok	0	103	13	1	200	0		
+2026-10-12T18:09:06Z	probe	probe:livez:4	/livez	ok	0	100	10	1	200	0		
+2026-10-12T18:09:10Z	probe	probe:readyz:4	/readyz	timeout	1	3084	3000	1		0		Unable to connect to the server: context deadline exceeded (Client.Timeout exceeded while awaiting headers)
+2026-10-12T18:09:10Z	probe	probe:version:4	/version	ok	0	68	7	1	200	0		
+2026-10-12T18:09:10Z	probe	probe:discovery:4	/apis	ok	0	84	8	1	200	0		
+2026-10-12T18:09:13Z	probe	probe:get-namespace:4	/api/v1/namespaces/kube-system	timeout	1	3084	3000	1		0		Unable to connect to the server: context deadline exceeded
+2026-10-12T18:09:13Z	probe	probe:list-namespaces:4	/api/v1/namespaces?limit=500	ok	0	90	12	1	200	0		
+2026-10-12T18:09:13Z	probe	probe:list-nodes:4	/api/v1/nodes?limit=500	ok	0	83	13	1	200	0		
+2026-10-12T18:09:16Z	probe	probe:list-pods:4	/api/v1/pods?limit=500	timeout	1	3074	3002	1		0		Unable to connect to the server: context deadline exceeded (Client.Timeout exceeded while awaiting headers)
+2026-10-12T18:09:16Z	probe	probe:list-events:4	/api/v1/events?limit=500	ok	0	118	26	1	200	0		
+2026-10-12T18:09:16Z	probe	probe:list-leases:4	/apis/coordination.k8s.io/v1/namespaces/kube-node-lease/leases?limit=500	ok	0	108	14	1	200	0		
+2026-10-12T18:09:17Z	probe	probe:livez:5	/livez	ok	0	72	9	1	200	0		
+2026-10-12T18:09:17Z	probe	probe:readyz:5	/readyz	ok	0	119	11	1	200	0		
+2026-10-12T18:09:20Z	probe	probe:version:5	/version	timeout	1	3097	3002	1		0		Unable to connect to the server: context deadline exceeded
+2026-10-12T18:09:20Z	probe	probe:discovery:5	/apis	ok	0	80	8	1	200	0		
+2026-10-12T18:09:23Z	probe	probe:get-namespace:5	/api/v1/namespaces/kube-system	timeout	1	3076	3001	1		0		Unable to connect to the server: context deadline exceeded
+2026-10-12T18:09:23Z	probe	probe:list-namespaces:5	/api/v1/namespaces?limit=500	ok	0	102	12	1	200	0		
+2026-10-12T18:09:23Z	probe	probe:list-nodes:5	/api/v1/nodes?limit=500	ok	0	108	15	1	200	0		
+2026-10-12T18:09:27Z	probe	probe:list-pods:5	/api/v1/pods?limit=500	timeout	1	3101	3001	1		0		Unable to connect to the server: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)
+2026-10-12T18:09:27Z	probe	probe:list-events:5	/api/v1/events?limit=500	ok	0	90	17	1	200	0		
+2026-10-12T18:09:27Z	probe	probe:list-leases:5	/apis/coordination.k8s.io/v1/namespaces/kube-node-lease/leases?limit=500	unreachable	1	72	1	1		0		Unable to connect to the server: read tcp 127.0.0.1:33260->127.0.0.1:16443: read: connection reset by peer
+2026-10-12T18:09:27Z	probe	probe:livez:6	/livez	ok	0	92	14	1	200	0		
+2026-10-12T18:09:27Z	probe	probe:readyz:6	/readyz	ok	0	116	14	1	200	0		
+2026-10-12T18:09:27Z	probe	probe:version:6	/version	ok	0	93	8	1	200	0		
+2026-10-12T18:09:27Z	probe	probe:discovery:6	/apis	ok	0	86	10	1	200	0		
+2026-10-12T18:09:30Z	probe	probe:get-namespace:6	/api/v1/namespaces/kube-system	timeout	1	3073	3001	1		0		Unable to connect to the server: context deadline exceeded
+2026-10-12T18:09:30Z	probe	probe:list-namespaces:6	/api/v1/namespaces?limit=500	ok	0	76	11	1	200	0		
+2026-10-12T18:09:31Z	probe	probe:list-nodes:6	/api/v1/nodes?limit=500	ok	0	103	12	1	200	0		
+2026-10-12T18:09:31Z	probe	probe:list-pods:6	/api/v1/pods?limit=500	ok	0	96	15	1	200	0		
+2026-10-12T18:09:31Z	probe	probe:list-events:6	/api/v1/events?limit=500	ok	0	83	17	1	200	0		
+2026-10-12T18:09:31Z	probe	probe:list-leases:6	/apis/coordination.k8s.io/v1/namespaces/kube-node-lease/leases?limit=500	ok	0	75	9	1	200	0		
+2026-10-12T18:09:31Z	probe	probe:livez:7	/livez	ok	0	83	7	1	200	0		
+2026-10-12T18:09:31Z	probe	probe:readyz:7	/readyz	ok	0	93	10	1	200	0		
+2026-10-12T18:09:31Z	probe	probe:version:7	/version	ok	0	81	7	1	200	0		
+2026-10-12T18:09:31Z	probe	probe:discovery:7	/apis	unreachable	1	76	1	1		0		Unable to connect to the server: write tcp 127.0.0.1:34688->127.0.0.1:16443: write: connection reset by peer
+2026-10-12T18:09:32Z	probe	probe:get-namespace:7	/api/v1/namespaces/kube-system	ok	0	87	9	1	200	0		
+2026-10-12T18:09:32Z	probe	probe:list-namespaces:7	/api/v1/namespaces?limit=500	ok	0	79	13	1	200	0		
+2026-10-12T18:09:32Z	probe	probe:list-nodes:7	/api/v1/nodes?limit=500	ok	0	94	11	1	200	0		
+2026-10-12T18:09:32Z	probe	probe:list-pods:7	/api/v1/pods?limit=500	ok	0	98	15	1	200	0		
+2026-10-12T18:09:35Z	probe	probe:list-events:7	/api/v1/events?limit=500	timeout	1	3091	3002	1		0		Unable to connect to the server: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)
+2026-10-12T18:09:35Z	probe	probe:list-leases:7	/apis/coordination.k8s.io/v1/namespaces/kube-node-lease/leases?limit=500	ok	0	95	13	1	200	0		
+2026-10-12T18:09:35Z	probe	probe:livez:8	/livez	ok	0	83	9	1	200	0		
+2026-10-12T18:09:35Z	probe	probe:readyz:8	/readyz	unreachable	1	75	1	1		0		Unable to connect to the server: read tcp 127.0.0.1:34752->127.0.0.1:16443: read: connection reset by peer
+2026-10-12T18:09:35Z	probe	probe:version:8	/version	ok	0	75	9	1	200	0		
+2026-10-12T18:09:39Z	probe	probe:discovery:8	/apis	timeout	1	3063	3000	1		0		Unable to connect to the server: context deadline exceeded (Client.Timeout exceeded while awaiting headers)
+2026-10-12T18:09:42Z	probe	probe:get-namespace:8	/api/v1/namespaces/kube-system	timeout	1	3071	3000	1		0		Unable to connect to the server: context deadline exceeded
+2026-10-12T18:09:42Z	probe	probe:list-namespaces:8	/api/v1/namespaces?limit=500	unreachable	1	93	1	1		0		Unable to connect to the server: read tcp 127.0.0.1:48966->127.0.0.1:16443: read: connection reset by peer
+2026-10-12T18:09:42Z	probe	probe:list-nodes:8	/api/v1/nodes?limit=500	ok	0	111	13	1	200	0		
+2026-10-12T18:09:45Z	probe	probe:list-pods:8	/api/v1/pods?limit=500	timeout	1	3092	3000	1		0		Unable to connect to the server: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)
+2026-10-12T18:09:48Z	probe	probe:list-events:8	/api/v1/events?limit=500	timeout	1	3072	3001	1		0		Unable to connect to the server: context deadline exceeded (Client.Timeout exceeded while awaiting headers)
+2026-10-12T18:09:48Z	probe	probe:list-leases:8	/apis/coordination.k8s.io/v1/namespaces/kube-node-lease/leases?limit=500	ok	0	88	11	1	200	0		
+2026-10-12T18:09:48Z	probe	probe:livez:9	/livez	ok	0	90	11	1	200	0		
+2026-10-12T18:09:48Z	probe	probe:readyz:9	/readyz	unreachable	1	70	0	1		0		Unable to connect to the server: read tcp 127.0.0.1:49022->127.0.0.1:16443: read: connection reset by peer
+2026-10-12T18:09:49Z	probe	probe:version:9	/version	ok	0	79	9	1	200	0		
+2026-10-12T18:09:49Z	probe	probe:discovery:9	/apis	ok	0	78	10	1	200	0		
+2026-10-12T18:09:49Z	probe	probe:get-namespace:9	/api/v1/namespaces/kube-system	ok	0	103	13	1	200	0		
+2026-10-12T18:09:49Z	probe	probe:list-namespaces:9	/api/v1/namespaces?limit=500	ok	0	99	13	1	200	0		
+2026-10-12T18:09:49Z	probe	probe:list-nodes:9	/api/v1/nodes?limit=500	ok	0	104	15	1	200	0		
+2026-10-12T18:09:52Z	probe	probe:list-pods:9	/api/v1/pods?limit=500	timeout	1	3085	3000	1		0		Unable to connect to the server: context deadline exceeded (Client.Timeout exceeded while awaiting headers)
+2026-10-12T18:09:52Z	probe	probe:list-events:9	/api/v1/events?limit=500	ok	0	81	16	1	200	0		
+2026-10-12T18:09:52Z	probe	probe:list-leases:9	/apis/coordination.k8s.io/v1/namespaces/kube-node-lease/leases?limit=500	ok	0	84	10	1	200	0		
+2026-10-12T18:09:53Z	probe	probe:livez:10	/livez	ok	0	107	11	1	200	0		
+2026-10-12T18:09:53Z	probe	probe:readyz:10	/readyz	ok	0	96	13	1	200	0		
+2026-10-12T18:09:56Z	probe	probe:version:10	/version	timeout	1	3080	3002	1		0		Unable to connect to the server: context deadline exceeded
+2026-10-12T18:09:59Z	probe	probe:discovery:10	/apis	timeout	1	3069	3000	1		0		Unable to connect to the server: context deadline exceeded (Client.Timeout exceeded while awaiting headers)
+2026-10-12T18:10:02Z	probe	probe:get-namespace:10	/api/v1/namespaces/kube-system	timeout	1	3072	3001	1		0		Unable to connect to the server: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)
+2026-10-12T18:10:05Z	probe	probe:list-namespaces:10	/api/v1/namespaces?limit=500	timeout	1	3083	3001	1		0		Unable to connect to the server: context deadline exceeded (Client.Timeout exceeded while awaiting headers)
+2026-10-12T18:10:05Z	probe	probe:list-nodes:10	/api/v1/nodes?limit=500	ok	0	99	14	1	200	0		
+2026-10-12T18:10:05Z	probe	probe:list-pods:10	/api/v1/pods?limit=500	ok	0	115	19	1	200	0		
+2026-10-12T18:10:09Z	probe	probe:list-events:10	/api/v1/events?limit=500	timeout	1	3074	3001	1		0		Unable to connect to the server: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)
+2026-10-12T18:10:09Z	probe	probe:list-leases:10	/apis/coordination.k8s.io/v1/namespaces/kube-node-lease/leases?limit=500	unreachable	1	82	0	1		0		Unable to connect to the server: dial tcp 127.0.0.1:16443: connect: connection reset by peer
+2026-10-12T18:10:09Z	objects	list:pods	pods	ok	0	179	15	1	200	279769		
+2026-10-12T18:10:09Z	objects	list:events	events	ok	0	189	24	1	200	202034		
+2026-10-12T18:10:09Z	objects	list:deployments	deployments.apps	ok	0	113	13	1	200	61649		
+2026-10-12T18:10:10Z	objects	list:statefulsets	statefulsets.apps	ok	0	87	12	1	200	119		
+2026-10-12T18:10:10Z	objects	list:daemonsets	daemonsets.apps	ok	0	91	12	1	200	15467		
+2026-10-12T18:10:10Z	objects	list:jobs	jobs.batch	ok	0	110	19	1	200	5180		
+2026-10-12T18:10:10Z	objects	list:pvcs	persistentvolumeclaims	ok	0	104	12	1	200	1494		
+2026-10-12T18:10:10Z	objects	list:resourcequotas	resourcequotas	ok	0	89	12	1	200	1433		
+2026-10-12T18:10:11Z	objects	list:services	services	ok	0	1115	12	2	200	6395	recovered-after-1-failed-attempt(s);	
+2026-10-12T18:10:11Z	objects	list:endpointslices	endpointslices.discovery.k8s.io	ok	0	123	16	3	200	9271		
+2026-10-12T18:10:12Z	objects	list:hpas	horizontalpodautoscalers.autoscaling	ok	0	83	10	1	200	119		
+2026-10-12T18:10:12Z	node	node:k8s-perf-control-plane:summary	/api/v1/nodes/k8s-perf-control-plane/proxy/stats/summary	ok	0	126	44	1	200	40059		
+2026-10-12T18:10:12Z	node	node:k8s-perf-worker:summary	/api/v1/nodes/k8s-perf-worker/proxy/stats/summary	server_error	1	125	14	1	503	0		Error from server (ServiceUnavailable): error trying to reach service: dial tcp 172.18.0.2:10250: connect: connection refused
+2026-10-12T18:10:12Z	node	node:k8s-perf-control-plane:cadvisor	/api/v1/nodes/k8s-perf-control-plane/proxy/metrics/cadvisor	ok	0	128	59	1	200	604826		
+2026-10-12T18:10:12Z	node	node:k8s-perf-control-plane:probes	/api/v1/nodes/k8s-perf-control-plane/proxy/metrics/probes	ok	0	78	12	1	200	10904		
+2026-10-12T18:10:12Z	node	node:k8s-perf-control-plane:kubelet	/api/v1/nodes/k8s-perf-control-plane/proxy/metrics	unreachable	1	78	1	1		0		Unable to connect to the server: read tcp 127.0.0.1:51058->127.0.0.1:16443: read: connection reset by peer
+2026-10-12T18:10:15Z	node	node:k8s-perf-worker:cadvisor	/api/v1/nodes/k8s-perf-worker/proxy/metrics/cadvisor	timeout	1	3095	3002	1		0		Unable to connect to the server: context deadline exceeded (Client.Timeout exceeded while awaiting headers)
+2026-10-12T18:10:15Z	node	node:k8s-perf-worker:probes	/api/v1/nodes/k8s-perf-worker/proxy/metrics/probes	unreachable	1	85	1	1		0		Unable to connect to the server: write tcp 127.0.0.1:51064->127.0.0.1:16443: write: connection reset by peer
+2026-10-12T18:10:18Z	node	node:k8s-perf-worker:kubelet	/api/v1/nodes/k8s-perf-worker/proxy/metrics	timeout	1	3072	3002	1		0		Unable to connect to the server: context deadline exceeded
+2026-10-12T18:10:21Z	metrics	metrics:metrics-server:pods	/apis/metrics.k8s.io/v1beta1/pods	timeout	1	3089	3002	1		0		Unable to connect to the server: context deadline exceeded (Client.Timeout exceeded while awaiting headers)
+2026-10-12T18:10:24Z	apiserver	metrics:apiserver:end	/metrics	timeout	1	3070	3002	1		0		Unable to connect to the server: context deadline exceeded (Client.Timeout exceeded while awaiting headers)

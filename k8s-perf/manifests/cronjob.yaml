@@ -1,0 +1,107 @@
+# Run k8s-perf-collector.sh inside the cluster on a schedule.
+#
+# Prerequisites: manifests/rbac.yaml (namespace, ServiceAccount, RBAC). The
+# script itself is mounted from a ConfigMap, so no custom image is needed -
+# alpine/k8s ships bash, jq and kubectl:
+#
+#   kubectl apply -f rbac.yaml
+#   kubectl -n k8s-perf create configmap k8s-perf-collector-script \
+#     --from-file=../k8s-perf-collector.sh --dry-run=client -o yaml | kubectl apply -f -
+#   kubectl apply -f cronjob.yaml
+#
+#   # run once now and follow it
+#   kubectl -n k8s-perf create job --from=cronjob/k8s-perf-collector k8s-perf-manual
+#   kubectl -n k8s-perf logs -f job/k8s-perf-manual
+#
+# Reports (report.md, summary.json, csv/, raw/ and a .tar.gz of each run) are
+# kept on the k8s-perf-reports PVC for REPORT_RETENTION_DAYS. To copy the
+# latest report out, see k8s-perf/README.md.
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: k8s-perf-reports
+  namespace: k8s-perf
+spec:
+  accessModes: [ReadWriteOnce]
+  resources:
+    requests:
+      storage: 2Gi
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: k8s-perf-collector
+  namespace: k8s-perf
+spec:
+  schedule: "17 * * * *"            # hourly, off the top of the hour
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 0
+      activeDeadlineSeconds: 900
+      ttlSecondsAfterFinished: 86400
+      template:
+        metadata:
+          labels:
+            app.kubernetes.io/name: k8s-perf-collector
+        spec:
+          serviceAccountName: k8s-perf-collector
+          restartPolicy: Never
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 65534
+            runAsGroup: 65534
+            fsGroup: 65534
+            seccompProfile:
+              type: RuntimeDefault
+          containers:
+          - name: collector
+            image: alpine/k8s:1.37.1
+            imagePullPolicy: IfNotPresent
+            env:
+            - name: HOME                 # kubectl writes its discovery cache here
+              value: /tmp
+            - name: REPORT_RETENTION_DAYS
+              value: "7"
+            - name: COLLECTOR_ARGS       # any k8s-perf-collector.sh options
+              value: "--window 60 --archive"
+            command: ["bash", "-c"]
+            args:
+            - |
+              set -u
+              find /reports -mindepth 1 -maxdepth 1 -mtime "+${REPORT_RETENTION_DAYS}" -exec rm -rf {} + 2>/dev/null
+              out="/reports/run-$(date -u +%Y%m%dT%H%M%SZ)"
+              # shellcheck disable=SC2086 # COLLECTOR_ARGS is a word list
+              bash /scripts/k8s-perf-collector.sh --output-dir "$out" ${COLLECTOR_ARGS}
+              rc=$?
+              ln -sfn "$out" /reports/latest
+              exit "$rc"
+            resources:
+              requests: {cpu: 100m, memory: 128Mi}
+              limits: {memory: 512Mi}
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop: [ALL]
+            volumeMounts:
+            - name: script
+              mountPath: /scripts
+              readOnly: true
+            - name: reports
+              mountPath: /reports
+            - name: tmp
+              mountPath: /tmp
+          volumes:
+          - name: script
+            configMap:
+              name: k8s-perf-collector-script
+              defaultMode: 0555
+          - name: reports
+            persistentVolumeClaim:
+              claimName: k8s-perf-reports
+          - name: tmp
+            emptyDir: {}

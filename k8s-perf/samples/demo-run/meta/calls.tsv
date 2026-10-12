@@ -1,0 +1,168 @@
+ts	phase	id	target	status	exit_code	wall_ms	http_ms	http_requests	http_status	bytes	notes	message
+2026-10-12T18:27:30Z	cluster	version	/version	ok	0	606	17	1	200	379		
+2026-10-12T18:27:31Z	cluster	livez	/livez?verbose	ok	0	792	92	1	200	1767		
+2026-10-12T18:27:32Z	cluster	readyz	/readyz?verbose	ok	0	499	14	1	200	1789		
+2026-10-12T18:27:33Z	cluster	list:nodes	nodes	ok	0	912	36	1	200	21687		
+2026-10-12T18:27:34Z	cluster	list:namespaces	namespaces	ok	0	688	35	1	200	6419		
+2026-10-12T18:27:36Z	apiserver	metrics:apiserver:start	/metrics	ok	0	1053	135	1	200	4754873		
+2026-10-12T18:27:37Z	probe	probe:livez:1	/livez	ok	0	549	63	1	200	0		
+2026-10-12T18:27:38Z	probe	probe:readyz:1	/readyz	ok	0	1019	38	1	200	0		
+2026-10-12T18:27:39Z	probe	probe:version:1	/version	ok	0	265	37	1	200	0		
+2026-10-12T18:27:40Z	probe	probe:discovery:1	/apis	ok	0	847	20	1	200	0		
+2026-10-12T18:27:41Z	probe	probe:get-namespace:1	/api/v1/namespaces/kube-system	ok	0	468	39	1	200	0		
+2026-10-12T18:27:42Z	probe	probe:list-namespaces:1	/api/v1/namespaces?limit=500	ok	0	621	21	1	200	0		
+2026-10-12T18:27:43Z	probe	probe:list-nodes:1	/api/v1/nodes?limit=500	ok	0	653	26	1	200	0		
+2026-10-12T18:27:43Z	probe	probe:list-pods:1	/api/v1/pods?limit=500	ok	0	536	45	1	200	0		
+2026-10-12T18:27:44Z	probe	probe:list-events:1	/api/v1/events?limit=500	ok	0	591	41	1	200	0		
+2026-10-12T18:27:45Z	probe	probe:list-leases:1	/apis/coordination.k8s.io/v1/namespaces/kube-node-lease/leases?limit=500	ok	0	498	20	1	200	0		
+2026-10-12T18:27:46Z	probe	probe:livez:2	/livez	ok	0	859	67	1	200	0		
+2026-10-12T18:27:47Z	probe	probe:readyz:2	/readyz	ok	0	857	34	1	200	0		
+2026-10-12T18:27:48Z	probe	probe:version:2	/version	ok	0	567	10	1	200	0		
+2026-10-12T18:27:49Z	probe	probe:discovery:2	/apis	ok	0	719	41	1	200	0		
+2026-10-12T18:27:50Z	probe	probe:get-namespace:2	/api/v1/namespaces/kube-system	ok	0	179	17	1	200	0		
+2026-10-12T18:27:51Z	probe	probe:list-namespaces:2	/api/v1/namespaces?limit=500	ok	0	901	108	1	200	0		
+2026-10-12T18:27:52Z	probe	probe:list-nodes:2	/api/v1/nodes?limit=500	ok	0	710	25	1	200	0		
+2026-10-12T18:27:53Z	probe	probe:list-pods:2	/api/v1/pods?limit=500	ok	0	894	79	1	200	0		
+2026-10-12T18:27:54Z	probe	probe:list-events:2	/api/v1/events?limit=500	ok	0	785	96	1	200	0		
+2026-10-12T18:27:55Z	probe	probe:list-leases:2	/apis/coordination.k8s.io/v1/namespaces/kube-node-lease/leases?limit=500	ok	0	704	84	1	200	0		
+2026-10-12T18:27:56Z	probe	probe:livez:3	/livez	ok	0	774	47	1	200	0		
+2026-10-12T18:27:57Z	probe	probe:readyz:3	/readyz	ok	0	110	16	1	200	0		
+2026-10-12T18:27:57Z	probe	probe:version:3	/version	ok	0	533	19	1	200	0		
+2026-10-12T18:27:59Z	probe	probe:discovery:3	/apis	ok	0	846	67	1	200	0		
+2026-10-12T18:27:59Z	probe	probe:get-namespace:3	/api/v1/namespaces/kube-system	ok	0	459	45	1	200	0		
+2026-10-12T18:28:01Z	probe	probe:list-namespaces:3	/api/v1/namespaces?limit=500	ok	0	1224	80	1	200	0		
+2026-10-12T18:28:02Z	probe	probe:list-nodes:3	/api/v1/nodes?limit=500	ok	0	572	54	1	200	0		
+2026-10-12T18:28:02Z	probe	probe:list-pods:3	/api/v1/pods?limit=500	ok	0	412	65	1	200	0		
+2026-10-12T18:28:03Z	probe	probe:list-events:3	/api/v1/events?limit=500	ok	0	692	84	1	200	0		
+2026-10-12T18:28:04Z	probe	probe:list-leases:3	/apis/coordination.k8s.io/v1/namespaces/kube-node-lease/leases?limit=500	ok	0	597	73	1	200	0		
+2026-10-12T18:28:05Z	probe	probe:livez:4	/livez	ok	0	553	64	1	200	0		
+2026-10-12T18:28:06Z	probe	probe:readyz:4	/readyz	ok	0	677	31	1	200	0		
+2026-10-12T18:28:07Z	probe	probe:version:4	/version	ok	0	563	80	1	200	0		
+2026-10-12T18:28:08Z	probe	probe:discovery:4	/apis	ok	0	899	70	1	200	0		
+2026-10-12T18:28:09Z	probe	probe:get-namespace:4	/api/v1/namespaces/kube-system	ok	0	370	24	1	200	0		
+2026-10-12T18:28:09Z	probe	probe:list-namespaces:4	/api/v1/namespaces?limit=500	ok	0	740	65	1	200	0		
+2026-10-12T18:28:11Z	probe	probe:list-nodes:4	/api/v1/nodes?limit=500	ok	0	803	21	1	200	0		
+2026-10-12T18:28:11Z	probe	probe:list-pods:4	/api/v1/pods?limit=500	ok	0	494	153	1	200	0		
+2026-10-12T18:28:12Z	probe	probe:list-events:4	/api/v1/events?limit=500	ok	0	779	56	1	200	0		
+2026-10-12T18:28:13Z	probe	probe:list-leases:4	/apis/coordination.k8s.io/v1/namespaces/kube-node-lease/leases?limit=500	ok	0	472	18	1	200	0		
+2026-10-12T18:28:14Z	probe	probe:livez:5	/livez	ok	0	914	29	1	200	0		
+2026-10-12T18:28:15Z	probe	probe:readyz:5	/readyz	ok	0	548	22	1	200	0		
+2026-10-12T18:28:16Z	probe	probe:version:5	/version	ok	0	597	55	1	200	0		
+2026-10-12T18:28:16Z	probe	probe:discovery:5	/apis	ok	0	198	7	1	200	0		
+2026-10-12T18:28:16Z	probe	probe:get-namespace:5	/api/v1/namespaces/kube-system	ok	0	81	10	1	200	0		
+2026-10-12T18:28:16Z	probe	probe:list-namespaces:5	/api/v1/namespaces?limit=500	ok	0	79	11	1	200	0		
+2026-10-12T18:28:16Z	probe	probe:list-nodes:5	/api/v1/nodes?limit=500	ok	0	78	10	1	200	0		
+2026-10-12T18:28:16Z	probe	probe:list-pods:5	/api/v1/pods?limit=500	ok	0	81	10	1	200	0		
+2026-10-12T18:28:17Z	probe	probe:list-events:5	/api/v1/events?limit=500	ok	0	89	14	1	200	0		
+2026-10-12T18:28:17Z	probe	probe:list-leases:5	/apis/coordination.k8s.io/v1/namespaces/kube-node-lease/leases?limit=500	ok	0	81	11	1	200	0		
+2026-10-12T18:28:17Z	probe	probe:livez:6	/livez	ok	0	84	11	1	200	0		
+2026-10-12T18:28:17Z	probe	probe:readyz:6	/readyz	ok	0	77	8	1	200	0		
+2026-10-12T18:28:17Z	probe	probe:version:6	/version	ok	0	78	7	1	200	0		
+2026-10-12T18:28:17Z	probe	probe:discovery:6	/apis	ok	0	89	15	1	200	0		
+2026-10-12T18:28:17Z	probe	probe:get-namespace:6	/api/v1/namespaces/kube-system	ok	0	82	10	1	200	0		
+2026-10-12T18:28:17Z	probe	probe:list-namespaces:6	/api/v1/namespaces?limit=500	ok	0	76	9	1	200	0		
+2026-10-12T18:28:17Z	probe	probe:list-nodes:6	/api/v1/nodes?limit=500	ok	0	79	9	1	200	0		
+2026-10-12T18:28:18Z	probe	probe:list-pods:6	/api/v1/pods?limit=500	ok	0	83	11	1	200	0		
+2026-10-12T18:28:18Z	probe	probe:list-events:6	/api/v1/events?limit=500	ok	0	86	15	1	200	0		
+2026-10-12T18:28:18Z	probe	probe:list-leases:6	/apis/coordination.k8s.io/v1/namespaces/kube-node-lease/leases?limit=500	ok	0	75	9	1	200	0		
+2026-10-12T18:28:18Z	probe	probe:livez:7	/livez	ok	0	72	6	1	200	0		
+2026-10-12T18:28:18Z	probe	probe:readyz:7	/readyz	ok	0	77	8	1	200	0		
+2026-10-12T18:28:18Z	probe	probe:version:7	/version	ok	0	74	8	1	200	0		
+2026-10-12T18:28:18Z	probe	probe:discovery:7	/apis	ok	0	77	7	1	200	0		
+2026-10-12T18:28:18Z	probe	probe:get-namespace:7	/api/v1/namespaces/kube-system	ok	0	71	9	1	200	0		
+2026-10-12T18:28:18Z	probe	probe:list-namespaces:7	/api/v1/namespaces?limit=500	ok	0	79	9	1	200	0		
+2026-10-12T18:28:18Z	probe	probe:list-nodes:7	/api/v1/nodes?limit=500	ok	0	85	13	1	200	0		
+2026-10-12T18:28:19Z	probe	probe:list-pods:7	/api/v1/pods?limit=500	ok	0	81	11	1	200	0		
+2026-10-12T18:28:19Z	probe	probe:list-events:7	/api/v1/events?limit=500	ok	0	87	13	1	200	0		
+2026-10-12T18:28:19Z	probe	probe:list-leases:7	/apis/coordination.k8s.io/v1/namespaces/kube-node-lease/leases?limit=500	ok	0	81	9	1	200	0		
+2026-10-12T18:28:19Z	probe	probe:livez:8	/livez	ok	0	77	7	1	200	0		
+2026-10-12T18:28:19Z	probe	probe:readyz:8	/readyz	ok	0	77	7	1	200	0		
+2026-10-12T18:28:19Z	probe	probe:version:8	/version	ok	0	81	9	1	200	0		
+2026-10-12T18:28:19Z	probe	probe:discovery:8	/apis	ok	0	73	9	1	200	0		
+2026-10-12T18:28:19Z	probe	probe:get-namespace:8	/api/v1/namespaces/kube-system	ok	0	73	9	1	200	0		
+2026-10-12T18:28:19Z	probe	probe:list-namespaces:8	/api/v1/namespaces?limit=500	ok	0	83	9	1	200	0		
+2026-10-12T18:28:20Z	probe	probe:list-nodes:8	/api/v1/nodes?limit=500	ok	0	75	10	1	200	0		
+2026-10-12T18:28:20Z	probe	probe:list-pods:8	/api/v1/pods?limit=500	ok	0	79	13	1	200	0		
+2026-10-12T18:28:20Z	probe	probe:list-events:8	/api/v1/events?limit=500	ok	0	80	15	1	200	0		
+2026-10-12T18:28:20Z	probe	probe:list-leases:8	/apis/coordination.k8s.io/v1/namespaces/kube-node-lease/leases?limit=500	ok	0	76	9	1	200	0		
+2026-10-12T18:28:20Z	probe	probe:livez:9	/livez	ok	0	82	8	1	200	0		
+2026-10-12T18:28:20Z	probe	probe:readyz:9	/readyz	ok	0	81	9	1	200	0		
+2026-10-12T18:28:20Z	probe	probe:version:9	/version	ok	0	87	12	1	200	0		
+2026-10-12T18:28:20Z	probe	probe:discovery:9	/apis	ok	0	73	7	1	200	0		
+2026-10-12T18:28:20Z	probe	probe:get-namespace:9	/api/v1/namespaces/kube-system	ok	0	78	9	1	200	0		
+2026-10-12T18:28:21Z	probe	probe:list-namespaces:9	/api/v1/namespaces?limit=500	ok	0	77	10	1	200	0		
+2026-10-12T18:28:21Z	probe	probe:list-nodes:9	/api/v1/nodes?limit=500	ok	0	77	12	1	200	0		
+2026-10-12T18:28:21Z	probe	probe:list-pods:9	/api/v1/pods?limit=500	ok	0	78	11	1	200	0		
+2026-10-12T18:28:21Z	probe	probe:list-events:9	/api/v1/events?limit=500	ok	0	87	13	1	200	0		
+2026-10-12T18:28:21Z	probe	probe:list-leases:9	/apis/coordination.k8s.io/v1/namespaces/kube-node-lease/leases?limit=500	ok	0	90	12	1	200	0		
+2026-10-12T18:28:21Z	probe	probe:livez:10	/livez	ok	0	82	9	1	200	0		
+2026-10-12T18:28:21Z	probe	probe:readyz:10	/readyz	ok	0	82	11	1	200	0		
+2026-10-12T18:28:21Z	probe	probe:version:10	/version	ok	0	72	7	1	200	0		
+2026-10-12T18:28:21Z	probe	probe:discovery:10	/apis	ok	0	76	8	1	200	0		
+2026-10-12T18:28:22Z	probe	probe:get-namespace:10	/api/v1/namespaces/kube-system	ok	0	72	8	1	200	0		
+2026-10-12T18:28:22Z	probe	probe:list-namespaces:10	/api/v1/namespaces?limit=500	ok	0	74	9	1	200	0		
+2026-10-12T18:28:22Z	probe	probe:list-nodes:10	/api/v1/nodes?limit=500	ok	0	82	12	1	200	0		
+2026-10-12T18:28:22Z	probe	probe:list-pods:10	/api/v1/pods?limit=500	ok	0	104	18	1	200	0		
+2026-10-12T18:28:22Z	probe	probe:list-events:10	/api/v1/events?limit=500	ok	0	89	16	1	200	0		
+2026-10-12T18:28:22Z	probe	probe:list-leases:10	/apis/coordination.k8s.io/v1/namespaces/kube-node-lease/leases?limit=500	ok	0	73	10	1	200	0		
+2026-10-12T18:28:22Z	probe	probe:cm-create:1	POST configmaps (k8s-perf)	ok	0	85	11	1	201	0		
+2026-10-12T18:28:22Z	probe	probe:cm-get:1	GET configmap (k8s-perf)	ok	0	85	10	1	200	0		
+2026-10-12T18:28:22Z	probe	probe:cm-patch:1	PATCH configmap (k8s-perf)	ok	0	95	15	2	200	0		
+2026-10-12T18:28:23Z	probe	probe:cm-delete:1	DELETE configmap (k8s-perf)	ok	0	93	12	1	200	0		
+2026-10-12T18:28:23Z	probe	probe:cm-create:2	POST configmaps (k8s-perf)	ok	0	90	12	1	201	0		
+2026-10-12T18:28:23Z	probe	probe:cm-get:2	GET configmap (k8s-perf)	ok	0	85	8	1	200	0		
+2026-10-12T18:28:23Z	probe	probe:cm-patch:2	PATCH configmap (k8s-perf)	ok	0	101	18	2	200	0		
+2026-10-12T18:28:23Z	probe	probe:cm-delete:2	DELETE configmap (k8s-perf)	ok	0	103	12	1	200	0		
+2026-10-12T18:28:23Z	probe	probe:cm-create:3	POST configmaps (k8s-perf)	ok	0	93	10	1	201	0		
+2026-10-12T18:28:23Z	probe	probe:cm-get:3	GET configmap (k8s-perf)	ok	0	91	10	1	200	0		
+2026-10-12T18:28:23Z	probe	probe:cm-patch:3	PATCH configmap (k8s-perf)	ok	0	92	15	2	200	0		
+2026-10-12T18:28:24Z	probe	probe:cm-delete:3	DELETE configmap (k8s-perf)	ok	0	99	12	1	200	0		
+2026-10-12T18:28:24Z	probe	probe:cm-create:4	POST configmaps (k8s-perf)	ok	0	111	14	1	201	0		
+2026-10-12T18:28:24Z	probe	probe:cm-get:4	GET configmap (k8s-perf)	ok	0	105	9	1	200	0		
+2026-10-12T18:28:24Z	probe	probe:cm-patch:4	PATCH configmap (k8s-perf)	ok	0	117	21	2	200	0		
+2026-10-12T18:28:24Z	probe	probe:cm-delete:4	DELETE configmap (k8s-perf)	ok	0	142	17	1	200	0		
+2026-10-12T18:28:24Z	probe	probe:cm-create:5	POST configmaps (k8s-perf)	ok	0	99	17	1	201	0		
+2026-10-12T18:28:24Z	probe	probe:cm-get:5	GET configmap (k8s-perf)	ok	0	103	9	1	200	0		
+2026-10-12T18:28:25Z	probe	probe:cm-patch:5	PATCH configmap (k8s-perf)	ok	0	107	17	2	200	0		
+2026-10-12T18:28:25Z	probe	probe:cm-delete:5	DELETE configmap (k8s-perf)	ok	0	105	13	1	200	0		
+2026-10-12T18:28:25Z	probe	probe:cm-create:6	POST configmaps (k8s-perf)	ok	0	109	16	1	201	0		
+2026-10-12T18:28:25Z	probe	probe:cm-get:6	GET configmap (k8s-perf)	ok	0	89	8	1	200	0		
+2026-10-12T18:28:25Z	probe	probe:cm-patch:6	PATCH configmap (k8s-perf)	ok	0	101	15	2	200	0		
+2026-10-12T18:28:25Z	probe	probe:cm-delete:6	DELETE configmap (k8s-perf)	ok	0	83	12	1	200	0		
+2026-10-12T18:28:25Z	probe	probe:cm-create:7	POST configmaps (k8s-perf)	ok	0	83	10	1	201	0		
+2026-10-12T18:28:25Z	probe	probe:cm-get:7	GET configmap (k8s-perf)	ok	0	80	11	1	200	0		
+2026-10-12T18:28:26Z	probe	probe:cm-patch:7	PATCH configmap (k8s-perf)	ok	0	87	13	2	200	0		
+2026-10-12T18:28:26Z	probe	probe:cm-delete:7	DELETE configmap (k8s-perf)	ok	0	84	12	1	200	0		
+2026-10-12T18:28:26Z	probe	probe:cm-create:8	POST configmaps (k8s-perf)	ok	0	84	12	1	201	0		
+2026-10-12T18:28:26Z	probe	probe:cm-get:8	GET configmap (k8s-perf)	ok	0	80	9	1	200	0		
+2026-10-12T18:28:26Z	probe	probe:cm-patch:8	PATCH configmap (k8s-perf)	ok	0	93	16	2	200	0		
+2026-10-12T18:28:26Z	probe	probe:cm-delete:8	DELETE configmap (k8s-perf)	ok	0	109	13	1	200	0		
+2026-10-12T18:28:26Z	probe	probe:cm-create:9	POST configmaps (k8s-perf)	ok	0	95	12	1	201	0		
+2026-10-12T18:28:26Z	probe	probe:cm-get:9	GET configmap (k8s-perf)	ok	0	92	9	1	200	0		
+2026-10-12T18:28:27Z	probe	probe:cm-patch:9	PATCH configmap (k8s-perf)	ok	0	85	12	2	200	0		
+2026-10-12T18:28:27Z	probe	probe:cm-delete:9	DELETE configmap (k8s-perf)	ok	0	77	10	1	200	0		
+2026-10-12T18:28:27Z	probe	probe:cm-create:10	POST configmaps (k8s-perf)	ok	0	79	11	1	201	0		
+2026-10-12T18:28:27Z	probe	probe:cm-get:10	GET configmap (k8s-perf)	ok	0	94	16	1	200	0		
+2026-10-12T18:28:27Z	probe	probe:cm-patch:10	PATCH configmap (k8s-perf)	ok	0	110	14	2	200	0		
+2026-10-12T18:28:27Z	probe	probe:cm-delete:10	DELETE configmap (k8s-perf)	ok	0	85	12	1	200	0		
+2026-10-12T18:28:27Z	objects	list:pods	pods	ok	0	141	11	1	200	293951		
+2026-10-12T18:28:28Z	objects	list:events	events	ok	0	172	15	1	200	249171		
+2026-10-12T18:28:28Z	objects	list:deployments	deployments.apps	ok	0	97	10	1	200	61691		
+2026-10-12T18:28:28Z	objects	list:statefulsets	statefulsets.apps	ok	0	76	9	1	200	119		
+2026-10-12T18:28:28Z	objects	list:daemonsets	daemonsets.apps	ok	0	84	9	1	200	15387		
+2026-10-12T18:28:28Z	objects	list:jobs	jobs.batch	ok	0	91	9	1	200	13860		
+2026-10-12T18:28:28Z	objects	list:pvcs	persistentvolumeclaims	ok	0	79	9	1	200	3861		
+2026-10-12T18:28:28Z	objects	list:resourcequotas	resourcequotas	ok	0	84	10	1	200	1433		
+2026-10-12T18:28:29Z	objects	list:services	services	ok	0	93	11	1	200	6395		
+2026-10-12T18:28:29Z	objects	list:endpointslices	endpointslices.discovery.k8s.io	ok	0	115	16	3	200	9268		
+2026-10-12T18:28:29Z	objects	list:hpas	horizontalpodautoscalers.autoscaling	ok	0	75	9	1	200	119		
+2026-10-12T18:28:29Z	node	node:k8s-perf-control-plane:summary	/api/v1/nodes/k8s-perf-control-plane/proxy/stats/summary	ok	0	148	70	1	200	40076		
+2026-10-12T18:28:29Z	node	node:k8s-perf-worker:summary	/api/v1/nodes/k8s-perf-worker/proxy/stats/summary	ok	0	148	59	1	200	28597		
+2026-10-12T18:28:29Z	node	node:k8s-perf-control-plane:cadvisor	/api/v1/nodes/k8s-perf-control-plane/proxy/metrics/cadvisor	ok	0	163	79	1	200	604820		
+2026-10-12T18:28:29Z	node	node:k8s-perf-worker:cadvisor	/api/v1/nodes/k8s-perf-worker/proxy/metrics/cadvisor	ok	0	156	74	1	200	716003		
+2026-10-12T18:28:29Z	node	node:k8s-perf-control-plane:probes	/api/v1/nodes/k8s-perf-control-plane/proxy/metrics/probes	ok	0	74	11	1	200	10923		
+2026-10-12T18:28:29Z	node	node:k8s-perf-worker:probes	/api/v1/nodes/k8s-perf-worker/proxy/metrics/probes	ok	0	79	13	1	200	3301		
+2026-10-12T18:28:29Z	node	node:k8s-perf-control-plane:kubelet	/api/v1/nodes/k8s-perf-control-plane/proxy/metrics	ok	0	130	42	1	200	222418		
+2026-10-12T18:28:30Z	node	node:k8s-perf-worker:kubelet	/api/v1/nodes/k8s-perf-worker/proxy/metrics	ok	0	128	39	1	200	271965		
+2026-10-12T18:28:30Z	metrics	metrics:metrics-server:pods	/apis/metrics.k8s.io/v1beta1/pods	not_found	1	88	10	1	404	0		Error from server (NotFound): the server could not find the requested resource
+2026-10-12T18:28:30Z	apiserver	metrics:apiserver:end	/metrics	ok	0	190	52	1	200	4756597		
