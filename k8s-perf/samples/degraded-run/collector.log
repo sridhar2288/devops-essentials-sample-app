@@ -1,0 +1,146 @@
+2026-10-12T18:08:37Z [INFO] k8s-perf-collector 1.0.0: context=kind-k8s-perf scope=all-namespaces window=20s output=samples/degraded-run
+2026-10-12T18:08:37Z [INFO] == [1/8] Connectivity and API server health
+2026-10-12T18:08:37Z [DEBUG] version: ok http=10ms wall=115ms bytes=379
+2026-10-12T18:08:37Z [DEBUG] livez: ok http=15ms wall=122ms bytes=1767
+2026-10-12T18:08:37Z [DEBUG] readyz: ok http=11ms wall=91ms bytes=1789
+2026-10-12T18:08:37Z [INFO] == [2/8] Cluster inventory: nodes and namespaces
+2026-10-12T18:08:38Z [DEBUG] list:nodes: ok http=18ms wall=1113ms bytes=21468
+2026-10-12T18:08:39Z [DEBUG] list:namespaces: ok http=11ms wall=90ms bytes=6419
+2026-10-12T18:08:39Z [INFO] == [3/8] API server metrics, scrape 1 of 2 (opens the 20s observation window)
+2026-10-12T18:08:39Z [WARN] metrics:apiserver:start: unreachable after 92ms: Unable to connect to the server: write tcp 127.0.0.1:52074->127.0.0.1:16443: write: connection reset by peer
+2026-10-12T18:08:39Z [INFO] == [4/8] Client-side API latency probes (10 samples per endpoint, round-robin)
+2026-10-12T18:08:39Z [DEBUG] probe:livez:1: ok http=12ms wall=97ms bytes=0
+2026-10-12T18:08:39Z [WARN] probe:readyz:1: unreachable after 69ms: Unable to connect to the server: read tcp 127.0.0.1:52092->127.0.0.1:16443: read: connection reset by peer
+2026-10-12T18:08:39Z [DEBUG] probe:version:1: ok http=8ms wall=82ms bytes=0
+2026-10-12T18:08:39Z [WARN] probe:discovery:1: unreachable after 88ms: Unable to connect to the server: read tcp 127.0.0.1:52106->127.0.0.1:16443: read: connection reset by peer
+2026-10-12T18:08:39Z [WARN] probe:get-namespace:1: unreachable after 72ms: Unable to connect to the server: read tcp 127.0.0.1:52110->127.0.0.1:16443: read: connection reset by peer
+2026-10-12T18:08:39Z [DEBUG] probe:list-namespaces:1: ok http=10ms wall=82ms bytes=0
+2026-10-12T18:08:39Z [DEBUG] probe:list-nodes:1: ok http=11ms wall=98ms bytes=0
+2026-10-12T18:08:43Z [WARN] probe:list-pods:1: timeout after 3085ms: Unable to connect to the server: context deadline exceeded (Client.Timeout exceeded while awaiting headers)
+2026-10-12T18:08:46Z [WARN] probe:list-events:1: timeout after 3077ms: Unable to connect to the server: context deadline exceeded (Client.Timeout exceeded while awaiting headers)
+2026-10-12T18:08:46Z [DEBUG] probe:list-leases:1: ok http=10ms wall=89ms bytes=0
+2026-10-12T18:08:46Z [DEBUG] probe:livez:2: ok http=12ms wall=99ms bytes=0
+2026-10-12T18:08:46Z [DEBUG] probe:readyz:2: ok http=14ms wall=90ms bytes=0
+2026-10-12T18:08:46Z [DEBUG] probe:version:2: ok http=12ms wall=98ms bytes=0
+2026-10-12T18:08:46Z [DEBUG] probe:discovery:2: ok http=8ms wall=98ms bytes=0
+2026-10-12T18:08:46Z [WARN] probe:get-namespace:2: unreachable after 77ms: Unable to connect to the server: read tcp 127.0.0.1:38678->127.0.0.1:16443: read: connection reset by peer
+2026-10-12T18:08:47Z [DEBUG] probe:list-namespaces:2: ok http=10ms wall=77ms bytes=0
+2026-10-12T18:08:50Z [WARN] probe:list-nodes:2: timeout after 3066ms: Unable to connect to the server: context deadline exceeded (Client.Timeout exceeded while awaiting headers)
+2026-10-12T18:08:53Z [WARN] probe:list-pods:2: timeout after 3106ms: Unable to connect to the server: context deadline exceeded (Client.Timeout exceeded while awaiting headers)
+2026-10-12T18:08:56Z [WARN] probe:list-events:2: timeout after 3074ms: Unable to connect to the server: context deadline exceeded (Client.Timeout exceeded while awaiting headers)
+2026-10-12T18:08:59Z [WARN] probe:list-leases:2: timeout after 3075ms: Unable to connect to the server: context deadline exceeded (Client.Timeout exceeded while awaiting headers)
+2026-10-12T18:08:59Z [DEBUG] probe:livez:3: ok http=10ms wall=96ms bytes=0
+2026-10-12T18:09:02Z [WARN] probe:readyz:3: timeout after 3086ms: Unable to connect to the server: context deadline exceeded (Client.Timeout exceeded while awaiting headers)
+2026-10-12T18:09:02Z [DEBUG] probe:version:3: ok http=12ms wall=100ms bytes=0
+2026-10-12T18:09:03Z [DEBUG] probe:discovery:3: ok http=12ms wall=85ms bytes=0
+2026-10-12T18:09:03Z [DEBUG] probe:get-namespace:3: ok http=17ms wall=89ms bytes=0
+2026-10-12T18:09:03Z [DEBUG] probe:list-namespaces:3: ok http=13ms wall=104ms bytes=0
+2026-10-12T18:09:03Z [WARN] probe:list-nodes:3: unreachable after 68ms: Unable to connect to the server: read tcp 127.0.0.1:59580->127.0.0.1:16443: read: connection reset by peer
+2026-10-12T18:09:03Z [WARN] probe:list-pods:3: unreachable after 82ms: Unable to connect to the server: write tcp 127.0.0.1:59582->127.0.0.1:16443: write: connection reset by peer
+2026-10-12T18:09:06Z [WARN] probe:list-events:3: timeout after 3085ms: Unable to connect to the server: context deadline exceeded (Client.Timeout exceeded while awaiting headers)
+2026-10-12T18:09:06Z [DEBUG] probe:list-leases:3: ok http=13ms wall=103ms bytes=0
+2026-10-12T18:09:06Z [DEBUG] probe:livez:4: ok http=10ms wall=100ms bytes=0
+2026-10-12T18:09:10Z [WARN] probe:readyz:4: timeout after 3084ms: Unable to connect to the server: context deadline exceeded (Client.Timeout exceeded while awaiting headers)
+2026-10-12T18:09:10Z [DEBUG] probe:version:4: ok http=7ms wall=68ms bytes=0
+2026-10-12T18:09:10Z [DEBUG] probe:discovery:4: ok http=8ms wall=84ms bytes=0
+2026-10-12T18:09:13Z [WARN] probe:get-namespace:4: timeout after 3084ms: Unable to connect to the server: context deadline exceeded
+2026-10-12T18:09:13Z [DEBUG] probe:list-namespaces:4: ok http=12ms wall=90ms bytes=0
+2026-10-12T18:09:13Z [DEBUG] probe:list-nodes:4: ok http=13ms wall=83ms bytes=0
+2026-10-12T18:09:16Z [WARN] probe:list-pods:4: timeout after 3074ms: Unable to connect to the server: context deadline exceeded (Client.Timeout exceeded while awaiting headers)
+2026-10-12T18:09:16Z [DEBUG] probe:list-events:4: ok http=26ms wall=118ms bytes=0
+2026-10-12T18:09:16Z [DEBUG] probe:list-leases:4: ok http=14ms wall=108ms bytes=0
+2026-10-12T18:09:17Z [DEBUG] probe:livez:5: ok http=9ms wall=72ms bytes=0
+2026-10-12T18:09:17Z [DEBUG] probe:readyz:5: ok http=11ms wall=119ms bytes=0
+2026-10-12T18:09:20Z [WARN] probe:version:5: timeout after 3097ms: Unable to connect to the server: context deadline exceeded
+2026-10-12T18:09:20Z [DEBUG] probe:discovery:5: ok http=8ms wall=80ms bytes=0
+2026-10-12T18:09:23Z [WARN] probe:get-namespace:5: timeout after 3076ms: Unable to connect to the server: context deadline exceeded
+2026-10-12T18:09:23Z [DEBUG] probe:list-namespaces:5: ok http=12ms wall=102ms bytes=0
+2026-10-12T18:09:23Z [DEBUG] probe:list-nodes:5: ok http=15ms wall=108ms bytes=0
+2026-10-12T18:09:27Z [WARN] probe:list-pods:5: timeout after 3101ms: Unable to connect to the server: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)
+2026-10-12T18:09:27Z [DEBUG] probe:list-events:5: ok http=17ms wall=90ms bytes=0
+2026-10-12T18:09:27Z [WARN] probe:list-leases:5: unreachable after 72ms: Unable to connect to the server: read tcp 127.0.0.1:33260->127.0.0.1:16443: read: connection reset by peer
+2026-10-12T18:09:27Z [DEBUG] probe:livez:6: ok http=14ms wall=92ms bytes=0
+2026-10-12T18:09:27Z [DEBUG] probe:readyz:6: ok http=14ms wall=116ms bytes=0
+2026-10-12T18:09:27Z [DEBUG] probe:version:6: ok http=8ms wall=93ms bytes=0
+2026-10-12T18:09:27Z [DEBUG] probe:discovery:6: ok http=10ms wall=86ms bytes=0
+2026-10-12T18:09:30Z [WARN] probe:get-namespace:6: timeout after 3073ms: Unable to connect to the server: context deadline exceeded
+2026-10-12T18:09:30Z [DEBUG] probe:list-namespaces:6: ok http=11ms wall=76ms bytes=0
+2026-10-12T18:09:31Z [DEBUG] probe:list-nodes:6: ok http=12ms wall=103ms bytes=0
+2026-10-12T18:09:31Z [DEBUG] probe:list-pods:6: ok http=15ms wall=96ms bytes=0
+2026-10-12T18:09:31Z [DEBUG] probe:list-events:6: ok http=17ms wall=83ms bytes=0
+2026-10-12T18:09:31Z [DEBUG] probe:list-leases:6: ok http=9ms wall=75ms bytes=0
+2026-10-12T18:09:31Z [DEBUG] probe:livez:7: ok http=7ms wall=83ms bytes=0
+2026-10-12T18:09:31Z [DEBUG] probe:readyz:7: ok http=10ms wall=93ms bytes=0
+2026-10-12T18:09:31Z [DEBUG] probe:version:7: ok http=7ms wall=81ms bytes=0
+2026-10-12T18:09:31Z [WARN] probe:discovery:7: unreachable after 76ms: Unable to connect to the server: write tcp 127.0.0.1:34688->127.0.0.1:16443: write: connection reset by peer
+2026-10-12T18:09:32Z [DEBUG] probe:get-namespace:7: ok http=9ms wall=87ms bytes=0
+2026-10-12T18:09:32Z [DEBUG] probe:list-namespaces:7: ok http=13ms wall=79ms bytes=0
+2026-10-12T18:09:32Z [DEBUG] probe:list-nodes:7: ok http=11ms wall=94ms bytes=0
+2026-10-12T18:09:32Z [DEBUG] probe:list-pods:7: ok http=15ms wall=98ms bytes=0
+2026-10-12T18:09:35Z [WARN] probe:list-events:7: timeout after 3091ms: Unable to connect to the server: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)
+2026-10-12T18:09:35Z [DEBUG] probe:list-leases:7: ok http=13ms wall=95ms bytes=0
+2026-10-12T18:09:35Z [DEBUG] probe:livez:8: ok http=9ms wall=83ms bytes=0
+2026-10-12T18:09:35Z [WARN] probe:readyz:8: unreachable after 75ms: Unable to connect to the server: read tcp 127.0.0.1:34752->127.0.0.1:16443: read: connection reset by peer
+2026-10-12T18:09:35Z [DEBUG] probe:version:8: ok http=9ms wall=75ms bytes=0
+2026-10-12T18:09:39Z [WARN] probe:discovery:8: timeout after 3063ms: Unable to connect to the server: context deadline exceeded (Client.Timeout exceeded while awaiting headers)
+2026-10-12T18:09:42Z [WARN] probe:get-namespace:8: timeout after 3071ms: Unable to connect to the server: context deadline exceeded
+2026-10-12T18:09:42Z [WARN] probe:list-namespaces:8: unreachable after 93ms: Unable to connect to the server: read tcp 127.0.0.1:48966->127.0.0.1:16443: read: connection reset by peer
+2026-10-12T18:09:42Z [DEBUG] probe:list-nodes:8: ok http=13ms wall=111ms bytes=0
+2026-10-12T18:09:45Z [WARN] probe:list-pods:8: timeout after 3092ms: Unable to connect to the server: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)
+2026-10-12T18:09:48Z [WARN] probe:list-events:8: timeout after 3072ms: Unable to connect to the server: context deadline exceeded (Client.Timeout exceeded while awaiting headers)
+2026-10-12T18:09:48Z [DEBUG] probe:list-leases:8: ok http=11ms wall=88ms bytes=0
+2026-10-12T18:09:48Z [DEBUG] probe:livez:9: ok http=11ms wall=90ms bytes=0
+2026-10-12T18:09:48Z [WARN] probe:readyz:9: unreachable after 70ms: Unable to connect to the server: read tcp 127.0.0.1:49022->127.0.0.1:16443: read: connection reset by peer
+2026-10-12T18:09:49Z [DEBUG] probe:version:9: ok http=9ms wall=79ms bytes=0
+2026-10-12T18:09:49Z [DEBUG] probe:discovery:9: ok http=10ms wall=78ms bytes=0
+2026-10-12T18:09:49Z [DEBUG] probe:get-namespace:9: ok http=13ms wall=103ms bytes=0
+2026-10-12T18:09:49Z [DEBUG] probe:list-namespaces:9: ok http=13ms wall=99ms bytes=0
+2026-10-12T18:09:49Z [DEBUG] probe:list-nodes:9: ok http=15ms wall=104ms bytes=0
+2026-10-12T18:09:52Z [WARN] probe:list-pods:9: timeout after 3085ms: Unable to connect to the server: context deadline exceeded (Client.Timeout exceeded while awaiting headers)
+2026-10-12T18:09:52Z [DEBUG] probe:list-events:9: ok http=16ms wall=81ms bytes=0
+2026-10-12T18:09:52Z [DEBUG] probe:list-leases:9: ok http=10ms wall=84ms bytes=0
+2026-10-12T18:09:53Z [DEBUG] probe:livez:10: ok http=11ms wall=107ms bytes=0
+2026-10-12T18:09:53Z [DEBUG] probe:readyz:10: ok http=13ms wall=96ms bytes=0
+2026-10-12T18:09:56Z [WARN] probe:version:10: timeout after 3080ms: Unable to connect to the server: context deadline exceeded
+2026-10-12T18:09:59Z [WARN] probe:discovery:10: timeout after 3069ms: Unable to connect to the server: context deadline exceeded (Client.Timeout exceeded while awaiting headers)
+2026-10-12T18:10:02Z [WARN] probe:get-namespace:10: timeout after 3072ms: Unable to connect to the server: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)
+2026-10-12T18:10:05Z [WARN] probe:list-namespaces:10: timeout after 3083ms: Unable to connect to the server: context deadline exceeded (Client.Timeout exceeded while awaiting headers)
+2026-10-12T18:10:05Z [DEBUG] probe:list-nodes:10: ok http=14ms wall=99ms bytes=0
+2026-10-12T18:10:05Z [DEBUG] probe:list-pods:10: ok http=19ms wall=115ms bytes=0
+2026-10-12T18:10:09Z [WARN] probe:list-events:10: timeout after 3074ms: Unable to connect to the server: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)
+2026-10-12T18:10:09Z [WARN] probe:list-leases:10: unreachable after 82ms: Unable to connect to the server: dial tcp 127.0.0.1:16443: connect: connection reset by peer
+2026-10-12T18:10:09Z [INFO] == [5/8] Namespaced objects: pods, events, workloads, PVCs, quotas, services, HPAs
+2026-10-12T18:10:09Z [DEBUG] list:pods: ok http=15ms wall=179ms bytes=279769
+2026-10-12T18:10:09Z [DEBUG] list:events: ok http=24ms wall=189ms bytes=202034
+2026-10-12T18:10:09Z [DEBUG] list:deployments: ok http=13ms wall=113ms bytes=61649
+2026-10-12T18:10:10Z [DEBUG] list:statefulsets: ok http=12ms wall=87ms bytes=119
+2026-10-12T18:10:10Z [DEBUG] list:daemonsets: ok http=12ms wall=91ms bytes=15467
+2026-10-12T18:10:10Z [DEBUG] list:jobs: ok http=19ms wall=110ms bytes=5180
+2026-10-12T18:10:10Z [DEBUG] list:pvcs: ok http=12ms wall=104ms bytes=1494
+2026-10-12T18:10:10Z [DEBUG] list:resourcequotas: ok http=12ms wall=89ms bytes=1433
+2026-10-12T18:10:11Z [DEBUG] list:services: ok http=12ms wall=1115ms bytes=6395
+2026-10-12T18:10:11Z [DEBUG] list:endpointslices: ok http=16ms wall=123ms bytes=9271
+2026-10-12T18:10:12Z [DEBUG] list:hpas: ok http=10ms wall=83ms bytes=119
+2026-10-12T18:10:12Z [INFO] == [6/8] Node and container level: kubelet Summary API, cAdvisor, prober and kubelet metrics (via node proxy, 4 in parallel)
+2026-10-12T18:10:12Z [DEBUG] node:k8s-perf-control-plane:summary: ok http=44ms wall=126ms bytes=40059
+2026-10-12T18:10:12Z [WARN] node:k8s-perf-worker:summary: server_error (HTTP 503) after 125ms: Error from server (ServiceUnavailable): error trying to reach service: dial tcp 172.18.0.2:10250: connect: connection refused
+2026-10-12T18:10:12Z [DEBUG] node:k8s-perf-control-plane:cadvisor: ok http=59ms wall=128ms bytes=604826
+2026-10-12T18:10:12Z [DEBUG] node:k8s-perf-control-plane:probes: ok http=12ms wall=78ms bytes=10904
+2026-10-12T18:10:12Z [WARN] node:k8s-perf-control-plane:kubelet: unreachable after 78ms: Unable to connect to the server: read tcp 127.0.0.1:51058->127.0.0.1:16443: read: connection reset by peer
+2026-10-12T18:10:15Z [WARN] node:k8s-perf-worker:cadvisor: timeout after 3095ms: Unable to connect to the server: context deadline exceeded (Client.Timeout exceeded while awaiting headers)
+2026-10-12T18:10:15Z [WARN] node:k8s-perf-worker:probes: unreachable after 85ms: Unable to connect to the server: write tcp 127.0.0.1:51064->127.0.0.1:16443: write: connection reset by peer
+2026-10-12T18:10:18Z [WARN] node:k8s-perf-worker:kubelet: timeout after 3072ms: Unable to connect to the server: context deadline exceeded
+2026-10-12T18:10:18Z [INFO] == [7/8] metrics.k8s.io (metrics-server) - optional fallback for container usage
+2026-10-12T18:10:21Z [WARN] metrics:metrics-server:pods: timeout after 3089ms: Unable to connect to the server: context deadline exceeded (Client.Timeout exceeded while awaiting headers)
+2026-10-12T18:10:21Z [INFO] metrics-server not available (timeout); the kubelet Summary API is the usage source
+2026-10-12T18:10:21Z [INFO] == [8/8] API server metrics, scrape 2 of 2 (closes the 20s observation window)
+2026-10-12T18:10:24Z [WARN] metrics:apiserver:end: timeout after 3070ms: Unable to connect to the server: context deadline exceeded (Client.Timeout exceeded while awaiting headers)
+2026-10-12T18:10:24Z [INFO] collection finished: 127 API calls in 107s
+2026-10-12T18:10:24Z [INFO] analysing samples/degraded-run
+2026-10-12T18:10:25Z [INFO] analysis written: samples/degraded-run/report.md, samples/degraded-run/summary.json, samples/degraded-run/csv/
+2026-10-12T18:11:21Z [INFO] analysing samples/degraded-run
+2026-10-12T18:11:22Z [INFO] analysis written: samples/degraded-run/report.md, samples/degraded-run/summary.json, samples/degraded-run/csv/
+2026-10-12T18:29:38Z [INFO] analysing samples/degraded-run
+2026-10-12T18:29:39Z [INFO] analysis written: samples/degraded-run/report.md, samples/degraded-run/summary.json, samples/degraded-run/csv/
+2026-10-12T18:37:50Z [INFO] analysing samples/degraded-run
+2026-10-12T18:37:51Z [INFO] analysis written: samples/degraded-run/report.md, samples/degraded-run/summary.json, samples/degraded-run/csv/

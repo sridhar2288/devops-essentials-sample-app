@@ -1,0 +1,291 @@
+{
+  "apiVersion": "v1",
+  "items": [
+    {
+      "apiVersion": "batch/v1",
+      "kind": "Job",
+      "metadata": {
+        "annotations": {
+          "cronjob.kubernetes.io/instantiate": "manual"
+        },
+        "creationTimestamp": "2026-10-12T18:22:15Z",
+        "generation": 1,
+        "labels": {
+          "app.kubernetes.io/name": "k8s-perf-collector",
+          "batch.kubernetes.io/controller-uid": "6c267fb5-cdb4-4138-8f03-2fbd3c6290f1",
+          "batch.kubernetes.io/job-name": "k8s-perf-manual",
+          "controller-uid": "6c267fb5-cdb4-4138-8f03-2fbd3c6290f1",
+          "job-name": "k8s-perf-manual"
+        },
+        "name": "k8s-perf-manual",
+        "namespace": "k8s-perf",
+        "ownerReferences": [
+          {
+            "apiVersion": "batch/v1",
+            "controller": true,
+            "kind": "CronJob",
+            "name": "k8s-perf-collector",
+            "uid": "1b2b33d7-b705-40a4-b7a5-77cdf4bcd4ee"
+          }
+        ],
+        "resourceVersion": "6656",
+        "uid": "6c267fb5-cdb4-4138-8f03-2fbd3c6290f1"
+      },
+      "spec": {
+        "activeDeadlineSeconds": 900,
+        "backoffLimit": 0,
+        "completionMode": "NonIndexed",
+        "completions": 1,
+        "manualSelector": false,
+        "parallelism": 1,
+        "podReplacementPolicy": "TerminatingOrFailed",
+        "selector": {
+          "matchLabels": {
+            "batch.kubernetes.io/controller-uid": "6c267fb5-cdb4-4138-8f03-2fbd3c6290f1"
+          }
+        },
+        "suspend": false,
+        "template": {
+          "metadata": {
+            "labels": {
+              "app.kubernetes.io/name": "k8s-perf-collector",
+              "batch.kubernetes.io/controller-uid": "6c267fb5-cdb4-4138-8f03-2fbd3c6290f1",
+              "batch.kubernetes.io/job-name": "k8s-perf-manual",
+              "controller-uid": "6c267fb5-cdb4-4138-8f03-2fbd3c6290f1",
+              "job-name": "k8s-perf-manual"
+            }
+          },
+          "spec": {
+            "containers": [
+              {
+                "args": [
+                  "set -u\nfind /reports -mindepth 1 -maxdepth 1 -mtime \"+${REPORT_RETENTION_DAYS}\" -exec rm -rf {} + 2>/dev/null\nout=\"/reports/run-$(date -u +%Y%m%dT%H%M%SZ)\"\n# shellcheck disable=SC2086 # COLLECTOR_ARGS is a word list\nbash /scripts/k8s-perf-collector.sh --output-dir \"$out\" ${COLLECTOR_ARGS}\nrc=$?\nln -sfn \"$out\" /reports/latest\nexit \"$rc\"\n"
+                ],
+                "command": [
+                  "bash",
+                  "-c"
+                ],
+                "env": [
+                  {
+                    "name": "HOME",
+                    "value": "<redacted>"
+                  },
+                  {
+                    "name": "REPORT_RETENTION_DAYS",
+                    "value": "<redacted>"
+                  },
+                  {
+                    "name": "COLLECTOR_ARGS",
+                    "value": "<redacted>"
+                  }
+                ],
+                "image": "alpine/k8s:1.37.1",
+                "imagePullPolicy": "IfNotPresent",
+                "name": "collector",
+                "resources": {
+                  "limits": {
+                    "memory": "512Mi"
+                  },
+                  "requests": {
+                    "cpu": "100m",
+                    "memory": "128Mi"
+                  }
+                },
+                "securityContext": {
+                  "allowPrivilegeEscalation": false,
+                  "capabilities": {
+                    "drop": [
+                      "ALL"
+                    ]
+                  },
+                  "readOnlyRootFilesystem": true
+                },
+                "terminationMessagePath": "/dev/termination-log",
+                "terminationMessagePolicy": "File",
+                "volumeMounts": [
+                  {
+                    "mountPath": "/scripts",
+                    "name": "script",
+                    "readOnly": true
+                  },
+                  {
+                    "mountPath": "/reports",
+                    "name": "reports"
+                  },
+                  {
+                    "mountPath": "/tmp",
+                    "name": "tmp"
+                  }
+                ]
+              }
+            ],
+            "dnsPolicy": "ClusterFirst",
+            "restartPolicy": "Never",
+            "schedulerName": "default-scheduler",
+            "securityContext": {
+              "fsGroup": 65534,
+              "runAsGroup": 65534,
+              "runAsNonRoot": true,
+              "runAsUser": 65534,
+              "seccompProfile": {
+                "type": "RuntimeDefault"
+              }
+            },
+            "serviceAccount": "k8s-perf-collector",
+            "serviceAccountName": "k8s-perf-collector",
+            "terminationGracePeriodSeconds": 30,
+            "volumes": [
+              {
+                "configMap": {
+                  "defaultMode": 365,
+                  "name": "k8s-perf-collector-script"
+                },
+                "name": "script"
+              },
+              {
+                "name": "reports",
+                "persistentVolumeClaim": {
+                  "claimName": "k8s-perf-reports"
+                }
+              },
+              {
+                "emptyDir": {},
+                "name": "tmp"
+              }
+            ]
+          }
+        },
+        "ttlSecondsAfterFinished": 86400
+      },
+      "status": {
+        "completionTime": "2026-10-12T18:23:28Z",
+        "conditions": [
+          {
+            "lastProbeTime": "2026-10-12T18:23:28Z",
+            "lastTransitionTime": "2026-10-12T18:23:28Z",
+            "message": "Reached expected number of succeeded pods",
+            "reason": "CompletionsReached",
+            "status": "True",
+            "type": "SuccessCriteriaMet"
+          },
+          {
+            "lastProbeTime": "2026-10-12T18:23:28Z",
+            "lastTransitionTime": "2026-10-12T18:23:28Z",
+            "message": "Reached expected number of succeeded pods",
+            "reason": "CompletionsReached",
+            "status": "True",
+            "type": "Complete"
+          }
+        ],
+        "ready": 0,
+        "startTime": "2026-10-12T18:22:15Z",
+        "succeeded": 1,
+        "terminating": 0,
+        "uncountedTerminatedPods": {}
+      }
+    },
+    {
+      "apiVersion": "batch/v1",
+      "kind": "Job",
+      "metadata": {
+        "annotations": {},
+        "creationTimestamp": "2026-10-12T17:36:18Z",
+        "generation": 1,
+        "labels": {
+          "batch.kubernetes.io/controller-uid": "baea8502-be00-428b-92cd-f5f8b4985939",
+          "batch.kubernetes.io/job-name": "failing-job",
+          "controller-uid": "baea8502-be00-428b-92cd-f5f8b4985939",
+          "job-name": "failing-job"
+        },
+        "name": "failing-job",
+        "namespace": "perf-demo-broken",
+        "resourceVersion": "1062",
+        "uid": "baea8502-be00-428b-92cd-f5f8b4985939"
+      },
+      "spec": {
+        "backoffLimit": 1,
+        "completionMode": "NonIndexed",
+        "completions": 1,
+        "manualSelector": false,
+        "parallelism": 1,
+        "podReplacementPolicy": "TerminatingOrFailed",
+        "selector": {
+          "matchLabels": {
+            "batch.kubernetes.io/controller-uid": "baea8502-be00-428b-92cd-f5f8b4985939"
+          }
+        },
+        "suspend": false,
+        "template": {
+          "metadata": {
+            "labels": {
+              "batch.kubernetes.io/controller-uid": "baea8502-be00-428b-92cd-f5f8b4985939",
+              "batch.kubernetes.io/job-name": "failing-job",
+              "controller-uid": "baea8502-be00-428b-92cd-f5f8b4985939",
+              "job-name": "failing-job"
+            }
+          },
+          "spec": {
+            "containers": [
+              {
+                "command": [
+                  "sh",
+                  "-c",
+                  "echo 'migration 0042 failed: duplicate key' >&2; exit 3"
+                ],
+                "image": "busybox:1.36",
+                "imagePullPolicy": "IfNotPresent",
+                "name": "migrate",
+                "resources": {
+                  "limits": {
+                    "cpu": "50m",
+                    "memory": "16Mi"
+                  },
+                  "requests": {
+                    "cpu": "10m",
+                    "memory": "8Mi"
+                  }
+                },
+                "terminationMessagePath": "/dev/termination-log",
+                "terminationMessagePolicy": "File"
+              }
+            ],
+            "dnsPolicy": "ClusterFirst",
+            "restartPolicy": "Never",
+            "schedulerName": "default-scheduler",
+            "securityContext": {},
+            "terminationGracePeriodSeconds": 30
+          }
+        }
+      },
+      "status": {
+        "conditions": [
+          {
+            "lastProbeTime": "2026-10-12T17:36:35Z",
+            "lastTransitionTime": "2026-10-12T17:36:35Z",
+            "message": "Job has reached the specified backoff limit",
+            "reason": "BackoffLimitExceeded",
+            "status": "True",
+            "type": "FailureTarget"
+          },
+          {
+            "lastProbeTime": "2026-10-12T17:36:35Z",
+            "lastTransitionTime": "2026-10-12T17:36:35Z",
+            "message": "Job has reached the specified backoff limit",
+            "reason": "BackoffLimitExceeded",
+            "status": "True",
+            "type": "Failed"
+          }
+        ],
+        "failed": 2,
+        "ready": 0,
+        "startTime": "2026-10-12T17:36:18Z",
+        "terminating": 0,
+        "uncountedTerminatedPods": {}
+      }
+    }
+  ],
+  "kind": "List",
+  "metadata": {
+    "resourceVersion": ""
+  }
+}

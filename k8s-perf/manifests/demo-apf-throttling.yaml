@@ -1,0 +1,76 @@
+# Demo: provoke real API Priority and Fairness (APF) throttling so that
+# k8s-perf-collector.sh reports 429 responses and APF rejections.
+#
+# Requests from the ServiceAccount perf-demo-web/flooder are classified into a
+# priority level with a single concurrency share (about 3 seats) that rejects
+# instead of queueing. A burst of parallel requests from that identity is then
+# answered with HTTP 429 while every other client is unaffected.
+#
+#   kubectl apply -f demo-failure-scenarios.yaml -f demo-apf-throttling.yaml
+#   TOKEN=$(kubectl -n perf-demo-web create token flooder)
+#   SERVER=$(kubectl config view --minify -o jsonpath='{.clusters[0].cluster.server}')
+#   kubectl config view --raw --minify \
+#     -o jsonpath='{.clusters[0].cluster.certificate-authority-data}' | base64 -d > ca.crt
+#   seq 3000 | xargs -P 64 -I{} curl -s -o /dev/null -w '%{http_code}\n' --cacert ca.crt \
+#     -H "Authorization: Bearer $TOKEN" "$SERVER/api/v1/namespaces/perf-demo-web/pods" \
+#     | sort | uniq -c        # run k8s-perf-collector.sh while this is going
+#
+#   kubectl delete -f demo-apf-throttling.yaml      # clean up
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: flooder
+  namespace: perf-demo-web
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: flooder-view
+  namespace: perf-demo-web
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: view
+subjects:
+- kind: ServiceAccount
+  name: flooder
+  namespace: perf-demo-web
+---
+apiVersion: flowcontrol.apiserver.k8s.io/v1
+kind: PriorityLevelConfiguration
+metadata:
+  name: perf-demo-starved
+spec:
+  type: Limited
+  limited:
+    nominalConcurrencyShares: 1
+    lendablePercent: 0
+    limitResponse:
+      type: Reject
+---
+apiVersion: flowcontrol.apiserver.k8s.io/v1
+kind: FlowSchema
+metadata:
+  name: perf-demo-flooder
+spec:
+  priorityLevelConfiguration:
+    name: perf-demo-starved
+  matchingPrecedence: 500
+  distinguisherMethod:
+    type: ByUser
+  rules:
+  - subjects:
+    - kind: ServiceAccount
+      serviceAccount:
+        name: flooder
+        namespace: perf-demo-web
+    resourceRules:
+    - verbs: ["*"]
+      apiGroups: ["*"]
+      resources: ["*"]
+      clusterScope: true
+      namespaces: ["*"]
+    nonResourceRules:
+    - verbs: ["*"]
+      nonResourceURLs: ["*"]

@@ -1,0 +1,39 @@
+{
+  "apiVersion": "v1",
+  "items": [
+    {
+      "apiVersion": "v1",
+      "kind": "PersistentVolumeClaim",
+      "metadata": {
+        "annotations": {},
+        "creationTimestamp": "2026-10-12T17:36:18Z",
+        "finalizers": [
+          "kubernetes.io/pvc-protection"
+        ],
+        "name": "data-pending",
+        "namespace": "perf-demo-broken",
+        "resourceVersion": "861",
+        "uid": "139030ac-4f94-4ba5-831d-e507659e8b33"
+      },
+      "spec": {
+        "accessModes": [
+          "ReadWriteOnce"
+        ],
+        "resources": {
+          "requests": {
+            "storage": "1Gi"
+          }
+        },
+        "storageClassName": "no-such-storage-class",
+        "volumeMode": "Filesystem"
+      },
+      "status": {
+        "phase": "Pending"
+      }
+    }
+  ],
+  "kind": "List",
+  "metadata": {
+    "resourceVersion": ""
+  }
+}

@@ -1,0 +1,318 @@
+# Demo workloads for exercising k8s-perf-collector.sh.
+#
+# Creates two namespaces:
+#   perf-demo-web    - a healthy web tier, a CPU-throttled worker and an
+#                      exhausted ResourceQuota (performance-type findings)
+#   perf-demo-broken - one workload per common failure condition
+#
+# Uses only busybox:1.36 and nginx:1.27-alpine. Apply, wait ~3 minutes for the
+# failures to develop (restart counts, back-off events), then run the collector.
+#
+#   kubectl apply -f demo-failure-scenarios.yaml
+#   kubectl delete -f demo-failure-scenarios.yaml      # clean up
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: perf-demo-web
+  labels:
+    app.kubernetes.io/part-of: k8s-perf-demo
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: perf-demo-broken
+  labels:
+    app.kubernetes.io/part-of: k8s-perf-demo
+---
+# Healthy: 2 replicas, requests/limits set, readiness + liveness probes pass.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+  namespace: perf-demo-web
+spec:
+  replicas: 2
+  selector:
+    matchLabels: {app: web}
+  template:
+    metadata:
+      labels: {app: web}
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.27-alpine
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+        resources:
+          requests: {cpu: 50m, memory: 32Mi}
+          limits: {cpu: 200m, memory: 64Mi}
+        readinessProbe:
+          httpGet: {path: /, port: 80}
+          periodSeconds: 5
+        livenessProbe:
+          httpGet: {path: /, port: 80}
+          periodSeconds: 10
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web
+  namespace: perf-demo-web
+spec:
+  selector: {app: web}
+  ports:
+  - port: 80
+    targetPort: 80
+---
+# Performance: busy loop capped at 50m CPU -> heavy CFS throttling.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cpu-throttled-worker
+  namespace: perf-demo-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: cpu-throttled-worker}
+  template:
+    metadata:
+      labels: {app: cpu-throttled-worker}
+    spec:
+      containers:
+      - name: burner
+        image: busybox:1.36
+        imagePullPolicy: IfNotPresent
+        command: ["sh", "-c", "while true; do :; done"]
+        resources:
+          requests: {cpu: 10m, memory: 8Mi}
+          limits: {cpu: 50m, memory: 16Mi}
+---
+# Quota: 3 pods allowed and 3 pods running -> 100% used.
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: web-quota
+  namespace: perf-demo-web
+spec:
+  hard:
+    pods: "3"
+    requests.cpu: "1"
+    requests.memory: 256Mi
+---
+# Failure: process exits non-zero -> CrashLoopBackOff, restarts, BackOff events.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: crashloop
+  namespace: perf-demo-broken
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: crashloop}
+  template:
+    metadata:
+      labels: {app: crashloop}
+    spec:
+      containers:
+      - name: app
+        image: busybox:1.36
+        imagePullPolicy: IfNotPresent
+        command: ["sh", "-c", "echo 'fatal: cannot connect to db:5432 (connection refused)' >&2; echo 'db connection refused' > /dev/termination-log; sleep 2; exit 1"]
+        resources:
+          requests: {cpu: 10m, memory: 8Mi}
+          limits: {cpu: 50m, memory: 16Mi}
+---
+# Failure: Service in front of the crash-looping pods -> no ready endpoints.
+apiVersion: v1
+kind: Service
+metadata:
+  name: crashloop
+  namespace: perf-demo-broken
+spec:
+  selector: {app: crashloop}
+  ports:
+  - port: 8080
+    targetPort: 8080
+---
+# Failure: allocates memory without bound under a 24Mi limit -> OOMKilled.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: oom
+  namespace: perf-demo-broken
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: oom}
+  template:
+    metadata:
+      labels: {app: oom}
+    spec:
+      containers:
+      - name: hog
+        image: busybox:1.36
+        imagePullPolicy: IfNotPresent
+        command: ["sh", "-c", "sleep 5; tail /dev/zero"]
+        resources:
+          requests: {cpu: 10m, memory: 16Mi}
+          limits: {cpu: 100m, memory: 24Mi}
+---
+# Failure: image does not exist -> ErrImagePull / ImagePullBackOff.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bad-image
+  namespace: perf-demo-broken
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: bad-image}
+  template:
+    metadata:
+      labels: {app: bad-image}
+    spec:
+      containers:
+      - name: app
+        image: registry.invalid/k8s-perf/does-not-exist:0.0.1
+        resources:
+          requests: {cpu: 10m, memory: 8Mi}
+          limits: {cpu: 50m, memory: 16Mi}
+---
+# Failure: requests more CPU than any node has -> Pending / FailedScheduling.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: unschedulable
+  namespace: perf-demo-broken
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: unschedulable}
+  template:
+    metadata:
+      labels: {app: unschedulable}
+    spec:
+      containers:
+      - name: app
+        image: busybox:1.36
+        imagePullPolicy: IfNotPresent
+        command: ["sleep", "infinity"]
+        resources:
+          requests: {cpu: "64", memory: 8Mi}
+---
+# Timeout: readiness probe takes 5s but times out after 1s -> never Ready,
+# "Readiness probe failed: command timed out" events.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: probe-timeout
+  namespace: perf-demo-broken
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: probe-timeout}
+  template:
+    metadata:
+      labels: {app: probe-timeout}
+    spec:
+      containers:
+      - name: app
+        image: busybox:1.36
+        imagePullPolicy: IfNotPresent
+        command: ["sleep", "infinity"]
+        resources:
+          requests: {cpu: 10m, memory: 8Mi}
+          limits: {cpu: 50m, memory: 16Mi}
+        readinessProbe:
+          exec:
+            command: ["sh", "-c", "sleep 5"]
+          timeoutSeconds: 1
+          periodSeconds: 5
+---
+# Failure: liveness probe targets a closed port -> killed and restarted.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: liveness-fail
+  namespace: perf-demo-broken
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: liveness-fail}
+  template:
+    metadata:
+      labels: {app: liveness-fail}
+    spec:
+      containers:
+      - name: web
+        image: nginx:1.27-alpine
+        imagePullPolicy: IfNotPresent
+        resources:
+          requests: {cpu: 10m, memory: 16Mi}
+          limits: {cpu: 100m, memory: 32Mi}
+        livenessProbe:
+          httpGet: {path: /healthz, port: 8081}
+          initialDelaySeconds: 2
+          periodSeconds: 3
+          failureThreshold: 2
+---
+# Failure: references a ConfigMap that does not exist -> CreateContainerConfigError.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: missing-config
+  namespace: perf-demo-broken
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: missing-config}
+  template:
+    metadata:
+      labels: {app: missing-config}
+    spec:
+      containers:
+      - name: app
+        image: busybox:1.36
+        imagePullPolicy: IfNotPresent
+        command: ["sleep", "infinity"]
+        envFrom:
+        - configMapRef:
+            name: app-settings-that-does-not-exist
+        resources:
+          requests: {cpu: 10m, memory: 8Mi}
+          limits: {cpu: 50m, memory: 16Mi}
+---
+# Failure: Job exits 3 every time -> BackoffLimitExceeded.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: failing-job
+  namespace: perf-demo-broken
+spec:
+  backoffLimit: 1
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: migrate
+        image: busybox:1.36
+        imagePullPolicy: IfNotPresent
+        command: ["sh", "-c", "echo 'migration 0042 failed: duplicate key' >&2; exit 3"]
+        resources:
+          requests: {cpu: 10m, memory: 8Mi}
+          limits: {cpu: 50m, memory: 16Mi}
+---
+# Failure: StorageClass does not exist -> PVC stays Pending.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: data-pending
+  namespace: perf-demo-broken
+spec:
+  accessModes: ["ReadWriteOnce"]
+  storageClassName: no-such-storage-class
+  resources:
+    requests:
+      storage: 1Gi

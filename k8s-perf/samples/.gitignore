@@ -1,0 +1,2 @@
+# Intermediate analysis files; regenerate with: ../k8s-perf-collector.sh --analyze-only <run>
+*/analysis/
